@@ -16,7 +16,9 @@ public class CSVController {
 
     static String os = getOS(); //Pega o SO para abrir o arquivo corretamente
 
-    public static ListaLib<Disciplinas> getDisciplinas() {
+
+    //------------------------- Sessão Disciplinas ------------------------------------------
+    public static ListaLib<Disciplinas> getDisciplinas() { // Read
         ListaLib<Disciplinas> disciplinas = new ListaLib<>();
         BufferedReader reader = null;
         String line = "";
@@ -24,8 +26,7 @@ public class CSVController {
 
         if (os.contains("Windows")) {
             fileName = ".\\files\\disciplinas.csv";
-        }
-        if (os.contains("Linux")){
+        }else {
             fileName = ".//files//disciplinas.csv";
         }
 
@@ -48,6 +49,8 @@ public class CSVController {
         }
         return disciplinas;
     }
+    // ----------------------- Final Disciplinas -------------------------------
+
 
     private static String getOS() {
 		String os = System.getProperty("os.name");
