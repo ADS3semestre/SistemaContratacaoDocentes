@@ -1,19 +1,39 @@
 package model;
 
 public class Inscricao {
-	private int codProcesso;
+	private String codProcesso;
+	private String codigoDisciplina;
+	private String CPF;
 	
-	public Inscricao(int codProcesso) {
+	public Inscricao(String codProcesso, String CPF, String codigoDisciplina) {
 		this.codProcesso = codProcesso;
+		this.CPF = CPF;
+		this.codigoDisciplina = codigoDisciplina;
 	}
 
-	public int getCodProcesso() {
+	public String getCodProcesso() {
 		return codProcesso;
 	}
 
-	public void setCodProcesso(int codProcesso) {
+	public void setCodProcesso(String codProcesso) {
 		this.codProcesso = codProcesso;
 	}
-	
+
+	public String getCodigoDisciplina() {
+		return codigoDisciplina;
+	}
+
+	public void setCodigoDisciplina(String codigoDisciplina) {
+		this.codigoDisciplina = codigoDisciplina;
+	}
+
+	public String getCPF() {
+		return CPF;
+	}
+
+	public void setCPF(String cPF) {
+		CPF = cPF;
+	}
 	
 }
+	

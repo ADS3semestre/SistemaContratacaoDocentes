@@ -113,7 +113,6 @@ public class TelaProfessor extends JFrame {
 					panel.add(txtPontos);
 					
 					pos += 80;
-		
 		}
 		
 		JButton btnVoltar = new JButton("Voltar");
