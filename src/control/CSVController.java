@@ -14,9 +14,9 @@ public class CSVController {
         super();
     }
 
-    String os = getOS(); //Pega o SO para abrir o arquivo corretamente
+    static String os = getOS(); //Pega o SO para abrir o arquivo corretamente
 
-    public ListaLib<Disciplinas> getDisciplinas() {
+    public static ListaLib<Disciplinas> getDisciplinas() {
         ListaLib<Disciplinas> disciplinas = new ListaLib<>();
         BufferedReader reader = null;
         String line = "";
