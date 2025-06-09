@@ -10,7 +10,7 @@ public class Disciplinas {
 	private int horasDiarias;
 	private String codCurso;
 	
-	public Disciplinas(String codigoDisciplina, String nomeDisciplina, LocalDate dataMinistrada, LocalTime horaInicio, int horasDiarias, String codCurso) {
+	public Disciplinas(String nomeDisciplina, String codigoDisciplina, LocalDate dataMinistrada, LocalTime horaInicio, int horasDiarias, String codCurso) {
 		this.codigoDisciplina = codigoDisciplina;
 		this.nomeDisciplina = nomeDisciplina;
 		this.dataMinistrada = dataMinistrada;
