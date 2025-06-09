@@ -16,11 +16,11 @@ public class CSVController {
         String line = "";
 
         try {
-            reader = new BufferedReader(new FileReader("files\\disciplinas.csv"));
+            reader = new BufferedReader(new FileReader("./files/disciplinas.csv"));
             reader.readLine();
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
-                Disciplinas disciplina = new Disciplinas(row[0], row[1], LocalDate.parse(row[2]), LocalTime.parse(row[3]), Integer.parseInt(row[4]), row[5]);
+                Disciplinas disciplina = new Disciplinas(row[0], row[1], row[2], LocalTime.parse(row[3]), Integer.parseInt(row[4]), row[5]);
                 disciplinas.addLast(disciplina);
             }
         } catch (Exception e) {

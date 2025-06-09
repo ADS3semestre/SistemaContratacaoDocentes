@@ -5,6 +5,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.destny.model.ListaLib;
+
+import control.CSVController;
+import model.Cursos;
+import model.Disciplinas;
+
 import javax.swing.JButton;
 import java.awt.Color;
 import javax.swing.JTextPane;
@@ -15,12 +22,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JList;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class TelaCursos extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
+	private static int pos = 94;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -28,7 +37,8 @@ public class TelaCursos extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaCursos frame = new TelaCursos();
+					ListaLib<Cursos> listaCurs = CSVController.getCSVdata("./files/disciplinas.csv");
+					TelaCursos frame = new TelaCursos(listaCurs);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,7 +50,7 @@ public class TelaCursos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaCursos() {
+	public TelaCursos(ListaLib<Cursos> listaCurs) throws Exception{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 349);
 		contentPane = new JPanel();
@@ -54,55 +64,59 @@ public class TelaCursos extends JFrame {
 		btnAdd.setBounds(6, 46, 538, 36);
 		contentPane.add(btnAdd);
 		
-		JTextPane txtCursos = new JTextPane();
-		txtCursos.setEditable(false);
-		txtCursos.setBackground(new Color(238, 238, 238));
-		txtCursos.setFont(new Font("Arial", Font.PLAIN, 24));
-		txtCursos.setText("Cursos");
-		txtCursos.setBounds(249, 6, 76, 28);
-		contentPane.add(txtCursos);
+		for(int i=0; i<listaCurs.size(); i++) {
+			
+			int posItn = 6;
+			Cursos curs = listaCurs.get(i);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 255));
-		panel.setBounds(6, 94, 538, 73);
-		contentPane.add(panel);
-		panel.setLayout(null);
+			JPanel panel = new JPanel();
+			panel.setBackground(new Color(255, 255, 255));
+			panel.setBounds(6, pos, 538, 73);
+			contentPane.add(panel);
+			panel.setLayout(null);
+			
+				JButton btnEditar = new JButton("Editar");
+				btnEditar.setIcon(new ImageIcon("./img/edit.png"));
+				btnEditar.setBounds(337, 17, 90, 36);
+				panel.add(btnEditar);
+				
+				JButton btnApagar = new JButton("Apagar");
+				btnApagar.setIcon(new ImageIcon("./img/delete.png"));
+				btnApagar.setBounds(436, 17, 90, 36);
+				panel.add(btnApagar);
+				
+				//-------------------------------------------
+				
+				JLabel txtCurso = new JLabel(curs.getNome());
+				txtCurso.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+				txtCurso.setBounds(6, posItn, 268, 16);
+				panel.add(txtCurso);
+				
+				posItn += 16;
+				
+				JLabel txtCodigo = new JLabel(Integer.toString(curs.getCodigo()));
+				txtCodigo.setBounds(6, posItn, 268, 16);
+				panel.add(txtCodigo);
+				
+				posItn += 16;
+				
+				JLabel txtArea = new JLabel(curs.getArea());
+				txtArea.setBounds(6, posItn, 268, 16);
+				panel.add(txtArea);
+				
+				pos += 90;
 		
-		JTextPane txtCurso = new JTextPane();
-		txtCurso.setEditable(false);
-		txtCurso.setBounds(6, 6, 78, 19);
-		panel.add(txtCurso);
-		txtCurso.setFont(new Font("Arial", Font.PLAIN, 16));
-		txtCurso.setText("Curso");
-		
-		JTextPane txtCod = new JTextPane();
-		txtCod.setEditable(false);
-		txtCod.setBounds(6, 25, 75, 16);
-		panel.add(txtCod);
-		txtCod.setText("Codigo Curso");
-		txtCod.setFont(new Font("Arial", Font.PLAIN, 13));
-		
-		JTextPane txtArea = new JTextPane();
-		txtArea.setEditable(false);
-		txtArea.setText("Área Curso");
-		txtArea.setFont(new Font("Arial", Font.PLAIN, 13));
-		txtArea.setBounds(6, 43, 110, 16);
-		panel.add(txtArea);
-		
-		JButton btnEditar = new JButton("Editar");
-		btnEditar.setIcon(new ImageIcon("./img/edit.png"));
-		btnEditar.setBounds(337, 17, 90, 36);
-		panel.add(btnEditar);
-		
-		JButton btnApagar = new JButton("Apagar");
-		btnApagar.setIcon(new ImageIcon("./img/delete.png"));
-		btnApagar.setBounds(436, 17, 90, 36);
-		panel.add(btnApagar);
+		}
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.setIcon(new ImageIcon("./img/voltar.png"));
 		btnVoltar.setBounds(6, 6, 92, 30);
 		contentPane.add(btnVoltar);
+		
+		JLabel txtCursos = new JLabel("Cursos");
+		txtCursos.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
+		txtCursos.setBounds(238, 4, 92, 36);
+		contentPane.add(txtCursos);
 		
 		ActionListener actListenerBack = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

@@ -5,12 +5,12 @@ import java.time.*;
 public class Disciplinas {
 	private String codigoDisciplina;
 	private String nomeDisciplina;
-	private LocalDate dataMinistrada;
+	private String dataMinistrada;
 	private LocalTime horaInicio;
 	private int horasDiarias;
 	private String codCurso;
 	
-	public Disciplinas(String nomeDisciplina, String codigoDisciplina, LocalDate dataMinistrada, LocalTime horaInicio, int horasDiarias, String codCurso) {
+	public Disciplinas(String codigoDisciplina, String nomeDisciplina, String dataMinistrada, LocalTime horaInicio, int horasDiarias, String codCurso) {
 		this.codigoDisciplina = codigoDisciplina;
 		this.nomeDisciplina = nomeDisciplina;
 		this.dataMinistrada = dataMinistrada;
@@ -36,11 +36,11 @@ public class Disciplinas {
 		this.nomeDisciplina = nomeDisciplina;
 	}
 
-	public LocalDate getDataMinistrada() {
+	public String getDataMinistrada() {
 		return dataMinistrada;
 	}
 
-	public void setDataMinistrada(LocalDate dataMinistrada) {
+	public void setDataMinistrada(String dataMinistrada) {
 		this.dataMinistrada = dataMinistrada;
 	}
 

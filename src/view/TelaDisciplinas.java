@@ -32,7 +32,7 @@ public class TelaDisciplinas extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaLib<Disciplinas> listaDisc = CSVController.getCSVdata("./files/disciplinas.csv");
+					ListaLib<Disciplinas> listaDisc = CSVController.getDisciplinas();
 					TelaDisciplinas frame = new TelaDisciplinas(listaDisc);
 					frame.setVisible(true);
 				} catch (Exception e) {

@@ -5,6 +5,13 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.destny.model.ListaLib;
+
+import control.CSVController;
+import model.Cursos;
+import model.Professor;
+
 import javax.swing.JButton;
 import java.awt.Color;
 import javax.swing.JTextPane;
@@ -15,12 +22,14 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JList;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public class TelaProfessor extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-
+	private static int pos = 94;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -28,7 +37,8 @@ public class TelaProfessor extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaProfessor frame = new TelaProfessor();
+					ListaLib<Professor> listaProf = CSVController.getCSVdata("./files/disciplinas.csv");
+					TelaProfessor frame = new TelaProfessor(listaProf);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -40,7 +50,7 @@ public class TelaProfessor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaProfessor() {
+	public TelaProfessor(ListaLib<Professor> listaProf) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 349);
 		contentPane = new JPanel();
@@ -62,43 +72,49 @@ public class TelaProfessor extends JFrame {
 		txtProf.setBounds(215, 6, 138, 28);
 		contentPane.add(txtProf);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 255));
-		panel.setBounds(6, 94, 538, 73);
-		contentPane.add(panel);
-		panel.setLayout(null);
+		for(int i=0; i<listaProf.size(); i++) {
+					
+					int posItn = 6;
+					Professor prof = listaProf.get(i);
 		
-		JTextPane txtNome = new JTextPane();
-		txtNome.setEditable(false);
-		txtNome.setBounds(6, 6, 239, 19);
-		panel.add(txtNome);
-		txtNome.setFont(new Font("Arial", Font.PLAIN, 16));
-		txtNome.setText("Nome");
+					JPanel panel = new JPanel();
+					panel.setBackground(new Color(255, 255, 255));
+					panel.setBounds(6, pos, 538, 73);
+					contentPane.add(panel);
+					panel.setLayout(null);
+					
+					JButton btnEdit = new JButton("");
+					btnEdit.setIcon(new ImageIcon("./img/edit.png"));
+					btnEdit.setBounds(344, 16, 90, 36);
+					panel.add(btnEdit);
+					
+					JButton btnDelete = new JButton("");
+					btnDelete.setIcon(new ImageIcon("./img/delete.png"));
+					btnDelete.setBounds(439, 16, 90, 36);
+					panel.add(btnDelete);
+					
+					//----------------------------------------------------------
+					
+					JLabel txtNome = new JLabel(prof.getNome());
+					txtNome.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+					txtNome.setBounds(6, posItn, 272, 16);
+					panel.add(txtNome);
+					
+					posItn += 16;
+					
+					JLabel txtCPF = new JLabel(prof.getCPF());
+					txtCPF.setBounds(6, posItn, 272, 16);
+					panel.add(txtCPF);
+					
+					posItn += 16;
+					
+					JLabel txtPontos = new JLabel(Double.toString(prof.getQuantidadePontos()));
+					txtPontos.setBounds(6, posItn, 272, 16);
+					panel.add(txtPontos);
+					
+					pos += 80;
 		
-		JTextPane txtCPF = new JTextPane();
-		txtCPF.setEditable(false);
-		txtCPF.setBounds(6, 25, 122, 16);
-		panel.add(txtCPF);
-		txtCPF.setText("CPF");
-		txtCPF.setFont(new Font("Arial", Font.PLAIN, 13));
-		
-		JTextPane txtPontos = new JTextPane();
-		txtPontos.setEditable(false);
-		txtPontos.setText("Pontos");
-		txtPontos.setFont(new Font("Arial", Font.PLAIN, 13));
-		txtPontos.setBounds(6, 43, 110, 16);
-		panel.add(txtPontos);
-		
-		JButton btnEdit = new JButton("");
-		//Image img = new ImageIcon(this.getClass().getResource("/edit.png")).getImage();
-		btnEdit.setIcon(new ImageIcon("./img/edit.png"));
-		btnEdit.setBounds(344, 16, 90, 36);
-		panel.add(btnEdit);
-		
-		JButton btnDelete = new JButton("");
-		btnDelete.setIcon(new ImageIcon("./img/delete.png"));
-		btnDelete.setBounds(439, 16, 90, 36);
-		panel.add(btnDelete);
+		}
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.setIcon(new ImageIcon("./img/voltar.png"));
