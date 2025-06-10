@@ -10,6 +10,7 @@ import java.time.LocalTime;
 import com.destny.model.ListaLib;
 import model.Disciplinas;
 import model.Professor;
+import model.Inscricao;
 public class CSVController {
 
     public CSVController(){
@@ -123,4 +124,38 @@ public class CSVController {
 	}
                 
     	
+    //-------------------------------Sessão Inscrição----------------------------------
+    
+    public static ListaLib<Inscricao> getInscricao() {
+    	ListaLib<Inscricao> inscricao = new ListaLib<>();
+    	BufferedReader reader = null;
+    	String line = "";
+    	String fileName = "";
+    	
+    	if (os.contains("Windows")) {
+    		fileName = ".\\files\\inscricao.csv";
+    		
+    	}	else {
+    		fileName = "./files/inscricao.csv";
+    	}
+    	try {
+    		reader = new BufferedReader(new FileReader(fileName));
+    		reader.readLine();
+    		while ((line = reader.readLine())!= null) {
+    			String[] row = line.split(",");
+    			Inscricao insc = new Inscricao (row[0], row[1], row[2]);
+    			inscricao.addLast(insc);
+    		}    		
+    	} catch (Exception e) {
+    		e.printStackTrace();		
+    	} finally {
+    		try {
+    			reader.close();
+    		} catch (IOException e) {
+    			e.printStackTrace();
+    		}
+		}
+    	return inscricao;
+    }
+    
 }
