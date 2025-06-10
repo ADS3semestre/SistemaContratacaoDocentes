@@ -8,6 +8,8 @@ import java.io.PrintWriter;
 import java.time.LocalTime;
 
 import com.destny.model.ListaLib;
+
+import model.Cursos;
 import model.Disciplinas;
 import model.Professor;
 import model.Inscricao;
@@ -25,7 +27,7 @@ public class CSVController {
 
     static String os = getOS(); // Pega o SO para abrir o arquivo corretamente
 
-    // ----------------------------- Sessão Disciplinas  -------------------------------
+    // ----------------------------- Sessão Disciplinas -------------------------------
 
     // Get File Name Disciplina
     private static String getFileNameDisciplina() {
@@ -89,33 +91,33 @@ public class CSVController {
         }
     }
 
-    // Update All Disciplinas 
-    private static void updateAllDisciplinas(ListaLib<Disciplinas> disciplinas) throws Exception{
+    // Update All Disciplinas
+    private static void updateAllDisciplinas(ListaLib<Disciplinas> disciplinas) throws Exception {
         String fileName = getFileNameDisciplina();
         String cabecalho = "Disciplina,Código,Dia,Hora Inicial,Horas diárias,Codigo do Curso";
         int t = disciplinas.size();
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
-                writer.append(cabecalho);
-                for (int tamanho = 0; tamanho < t; tamanho++) { // verificar se precisa de um flush aqui
-                    Disciplinas disc = disciplinas.get(tamanho);
+            writer.append(cabecalho);
+            for (int tamanho = 0; tamanho < t; tamanho++) { // verificar se precisa de um flush aqui
+                Disciplinas disc = disciplinas.get(tamanho);
 
-                    String cDisc = disc.getCodigoDisciplina();
-                    String nDisc = disc.getNomeDisciplina();
-                    String data = disc.getDataMinistrada();
-                    String hInicio = disc.getHoraInicio().toString();
-                    String hDiarias = String.valueOf(disc.getHorasDiarias());
-                    String cCurso = disc.getCodCurso();
+                String cDisc = disc.getCodigoDisciplina();
+                String nDisc = disc.getNomeDisciplina();
+                String data = disc.getDataMinistrada();
+                String hInicio = disc.getHoraInicio().toString();
+                String hDiarias = String.valueOf(disc.getHorasDiarias());
+                String cCurso = disc.getCodCurso();
 
-                    String line = ("\n" + nDisc + "," + cDisc + "," + data + "," + hInicio + "," + hDiarias + ","
-                            + cCurso);
-                    writer.append(line);
-                }
-                writer.flush();
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                String line = ("\n" + nDisc + "," + cDisc + "," + data + "," + hInicio + "," + hDiarias + ","
+                        + cCurso);
+                writer.append(line);
             }
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Remove Disciplina - Delete
@@ -132,7 +134,7 @@ public class CSVController {
     }
 
     // Update Disciplina - Update
-    public static void updateDisciplina(Disciplinas disciplina, int i) throws Exception{
+    public static void updateDisciplina(Disciplinas disciplina, int i) throws Exception {
         ListaLib<Disciplinas> disciplinas = new ListaLib<>();
         disciplinas = getDisciplinas();
         try {
@@ -178,137 +180,127 @@ public class CSVController {
         return professores;
     }
 
-    //-------------------------------Sessão Inscrição----------------------------------
-    
+    // -------------------------------Sessão Inscrição----------------------------------
+
     // Get Inscrição -- Read
     public static ListaLib<Inscricao> getInscricao() {
-    	ListaLib<Inscricao> inscricao = new ListaLib<>();
-    	BufferedReader reader = null;
-    	String line = "";
-    	String fileName = "";
-    	
-    	if (os.contains("Windows")) {
-    		fileName = ".\\files\\inscricao.csv";
-    		
-    	}	else {
-    		fileName = "./files/inscricao.csv";
-    	}
-    	try {
-    		reader = new BufferedReader(new FileReader(fileName));
-    		reader.readLine();
-    		while ((line = reader.readLine())!= null) {
-    			String[] row = line.split(",");
-    			Inscricao insc = new Inscricao (row[0], row[1], row[2]);
-    			inscricao.addLast(insc);
-    		}    		
-    	} catch (Exception e) {
-    		e.printStackTrace();		
-    	} finally {
-    		try {
-    			reader.close();
-    		} catch (IOException e) {
-    			e.printStackTrace();
-    		}
-		}
-    	return inscricao;
+        ListaLib<Inscricao> inscricao = new ListaLib<>();
+        BufferedReader reader = null;
+        String line = "";
+        String fileName = "";
+
+        if (os.contains("Windows")) {
+            fileName = ".\\files\\inscricao.csv";
+
+        } else {
+            fileName = "./files/inscricao.csv";
+        }
+        try {
+            reader = new BufferedReader(new FileReader(fileName));
+            reader.readLine();
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+                Inscricao insc = new Inscricao(row[0], row[1], row[2]);
+                inscricao.addLast(insc);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return inscricao;
     }
     // Get Inscrição -- Create
-    
+
     public static void addInscricao(Inscricao inscricao) {
-    	
-    	String line = "";
-    	String fileName = "";
-    	
-    	if (os.contains("Windows")) {
-    		fileName = ".\\files\\inscricao.csv";
-    		
-    	}	else {
-    		fileName = "./files/inscricao.csv";
-    	}
-    		
-    	String cInscProc = inscricao.getCodProcesso();
-    	String cInscDisc = inscricao.getCodigoDisciplina();
-    	String cpfInsc = inscricao.getCPF();
-    	
-    	line =  ("\n" +cInscProc+","+cInscDisc+","+cpfInsc);
-    	
-    	try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
-    		writer.append(line);
-    		writer.flush();
-    		writer.close();
-    		
-    	} catch (IOException e){
-    		e.printStackTrace();
-    	}
-    	
-    }  
-  
-    //----------------------------- Sessão Cursos ----------------------------
-    
+
+        String line = "";
+        String fileName = "";
+
+        if (os.contains("Windows")) {
+            fileName = ".\\files\\inscricao.csv";
+        } else {
+            fileName = "./files/inscricao.csv";
+        }
+
+        String cInscProc = inscricao.getCodProcesso();
+        String cpfInsc = inscricao.getCPF();
+        String cInscDisc = inscricao.getCodigoDisciplina();
+
+        line = ("\n" + cInscProc + "," + cpfInsc + "," + cInscDisc);
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
+            writer.append(line);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // ----------------------------- Sessão Cursos ----------------------------
+
     // Cursos --- Read
-    
+
     public static ListaLib<Cursos> getCursos() {
-    	ListaLib<Cursos> cursos = new ListaLib<>();
-    	BufferedReader reader = null;
-    	String line = "";
-    	String fileName = "";
-    	
-    	if (os.contains("Windows")) {
-    		fileName = ".\\files\\cursos.csv";
-    		
-    	}	else {
-    		fileName = "./files/cursos.csv";
-    	}
-    	try {
-    		reader = new BufferedReader(new FileReader(fileName));
-    		reader.readLine();
-    		while ((line = reader.readLine()) != null) {
-    			String[] row = line.split(",");
-    			Cursos curso = new Cursos (row [0], row[1], Integer.parseInt(row[2]));
-    			cursos.addLast(curso);
-    		}	
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    	} finally {
-    		try {
-    			reader.close();
-    		} catch (IOException e) {
-    			e.printStackTrace();
-    		}
-    	}
-    	return cursos;
+        ListaLib<Cursos> cursos = new ListaLib<>();
+        BufferedReader reader = null;
+        String line = "";
+        String fileName = "";
+
+        if (os.contains("Windows")) {
+            fileName = ".\\files\\cursos.csv";
+        } else {
+            fileName = "./files/cursos.csv";
+        }
+        try {
+            reader = new BufferedReader(new FileReader(fileName));
+            reader.readLine();
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+                Cursos curso = new Cursos(row[0], row[1], Integer.parseInt(row[2]));
+                cursos.addLast(curso);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return cursos;
     }
-    
+
     // Cursos -- Create
-    
+
     public static void addCurso(Cursos curso) {
-    	String fileName = "";
-    	
-    	if (os.contains("Windows")) {
-    		fileName = ".\\files\\cursos.csv";
-    		
-    	}	else {
-    		fileName = "./files/cursos.csv";
-    	}
-    	
-    	String nCurso = curso.getNome();
-    	String aCurso = curso.getArea();
-    	String Cursocod = String.valueOf(curso.getCodigo());
-    	
-    	String line = ("\n"+nCurso+","+aCurso+","+Cursocod);
-    	
-    	try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
-    		writer.append(line);
-    		writer.flush();
-    		writer.close();
-    	
-    	} catch (IOException e) {
-    		e.printStackTrace();
-    	}
+        String fileName = "";
+
+        if (os.contains("Windows")) {
+            fileName = ".\\files\\cursos.csv";
+        } else {
+            fileName = "./files/cursos.csv";
+        }
+
+        String nCurso = curso.getNome();
+        String aCurso = curso.getArea();
+        String Cursocod = String.valueOf(curso.getCodigo());
+
+        String line = ("\n" + nCurso + "," + aCurso + "," + Cursocod);
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
+            writer.append(line);
+            writer.flush();
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-    
-
-
-
-
 }
