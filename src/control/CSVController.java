@@ -26,8 +26,8 @@ public class CSVController {
 
         if (os.contains("Windows")) {
             fileName = ".\\files\\disciplinas.csv";
-        }else {
-            fileName = ".//files//disciplinas.csv";
+        } else {
+            fileName = "./files/disciplinas.csv";
         }
 
         try {
