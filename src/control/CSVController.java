@@ -16,24 +16,34 @@ public class CSVController {
     public CSVController(){
         super();
     }
+    
+    private static String getOS() {
+		String os = System.getProperty("os.name");
+		return os;
+	}
 
     static String os = getOS(); //Pega o SO para abrir o arquivo corretamente
 
     //----------------------------- Sessão Disciplinas ------------------------------- 
 
-    // Get Disciplinas - Read
-    public static ListaLib<Disciplinas> getDisciplinas() {
-        ListaLib<Disciplinas> disciplinas = new ListaLib<>();
-        BufferedReader reader = null;
-        String line = "";
+    //Get File Name Disciplina
+    private static String getFileNameDisciplina(){
         String fileName = "";
-
         if (os.contains("Windows")) {
             fileName = ".\\files\\disciplinas.csv";
         }
         else{
             fileName = "./files//disciplinas.csv";
         }
+        return fileName;
+    }
+
+    // Get Disciplinas - Read
+    public static ListaLib<Disciplinas> getDisciplinas() {
+        ListaLib<Disciplinas> disciplinas = new ListaLib<>();
+        BufferedReader reader = null;
+        String line = "";
+        String fileName = getFileNameDisciplina();
 
         try {
             reader = new BufferedReader(new FileReader(fileName));
@@ -57,13 +67,7 @@ public class CSVController {
     
     // Add Disciplinas - Create
     public static void addDiciplina(Disciplinas disciplina) {
-        String fileName = "";
-
-        if (os.contains("Windows")) {
-            fileName = ".\\files\\disciplinas.csv";
-        } else {
-            fileName = "./files/disciplinas.csv";
-        }
+        String fileName = getFileNameDisciplina();
 
         String cDisc = disciplina.getCodigoDisciplina();
         String nDisc = disciplina.getNomeDisciplina();
@@ -84,6 +88,42 @@ public class CSVController {
         }
     }
 
+    // Remove Disciplina - Delete
+    public static void removeDisciplina(Disciplinas disciplina, int i) throws Exception{
+        String fileName = getFileNameDisciplina();
+        String cabecalho = "Disciplina,Código,Dia,Hora Inicial,Horas diárias,Codigo do Curso";
+        int t = 0;
+
+        ListaLib<Disciplinas> disciplinas = new ListaLib<>();
+        disciplinas = getDisciplinas();
+        try {
+            disciplinas.remove(i);
+            t = disciplinas.size();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally{
+            try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+                writer.append(cabecalho);
+                for (int tamanho = 0; tamanho < t; tamanho++) { //verificar se precisa de um flush aqui
+                    Disciplinas disc = disciplinas.get(tamanho);
+
+                    String cDisc = disc.getCodigoDisciplina();
+                    String nDisc = disc.getNomeDisciplina();
+                    String data = disc.getDataMinistrada();
+                    String hInicio = disc.getHoraInicio().toString();
+                    String hDiarias = String.valueOf(disc.getHorasDiarias());
+                    String cCurso = disc.getCodCurso();
+
+                    String line = ("\n"+nDisc+","+cDisc+","+data+","+hInicio+","+hDiarias+","+cCurso);
+                    writer.append(line);
+                }
+                writer.flush();
+                writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        }
+    }
         //----------------------------- Sessão Professor ------------------------------- 
     public static ListaLib<Professor> getProfessor(){
     	ListaLib<Professor> professores = new ListaLib<>();
@@ -117,12 +157,6 @@ public class CSVController {
         }
         return professores;
     }
-
-    private static String getOS() {
-		String os = System.getProperty("os.name");
-		return os;
-	}
-                
     	
     //-------------------------------Sessão Inscrição----------------------------------
     

@@ -5,10 +5,11 @@ import control.CSVController;
 import model.Disciplinas;
 
 public class main {
-    public static void main(String[] args) {
-        LocalTime time = LocalTime.parse("19:20:00");
-        Disciplinas disc = new Disciplinas("Sistemas Operacionais I","ISO001","Terça-Feira",time,4,"1110482");
-
-        CSVController.addDiciplina(disc);
+    public static void main(String[] args) throws Exception {
+        LocalTime time = LocalTime.parse("21:10:00");
+        //Disciplinas disc = new Disciplinas("Sistemas Operacionais I","ISO001","Terça-Feira",time,4,"1110482");
+        Disciplinas disc = new Disciplinas("Interação Humano Computador","IHC001","Quarta-Feira",time,2,"1110482");
+        int i = 2;
+        CSVController.removeDisciplina(disc, i);
     }
 }
