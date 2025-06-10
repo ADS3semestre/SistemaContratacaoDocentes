@@ -2,7 +2,9 @@ package control;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalTime;
 
 import com.destny.model.ListaLib;
@@ -16,6 +18,9 @@ public class CSVController {
 
     static String os = getOS(); //Pega o SO para abrir o arquivo corretamente
 
+    //----------------------------- Sessão Disciplinas ------------------------------- 
+
+    // Get Disciplinas - Read
     public static ListaLib<Disciplinas> getDisciplinas() {
         ListaLib<Disciplinas> disciplinas = new ListaLib<>();
         BufferedReader reader = null;
@@ -48,16 +53,40 @@ public class CSVController {
         }
         return disciplinas;
     }
+    
+    // Add Disciplinas - Create
+    public static void addDiciplina(Disciplinas disciplina) {
+        String fileName = "";
 
-    private static String getOS() {
-		String os = System.getProperty("os.name");
-		return os;
-	}
-    
-    
+        if (os.contains("Windows")) {
+            fileName = ".\\files\\disciplinas.csv";
+        } else {
+            fileName = "./files/disciplinas.csv";
+        }
+
+        String cDisc = disciplina.getCodigoDisciplina();
+        String nDisc = disciplina.getNomeDisciplina();
+        String data = disciplina.getDataMinistrada();
+        String hInicio = disciplina.getHoraInicio().toString();
+        String hDiarias = String.valueOf(disciplina.getHorasDiarias());
+        String cCurso = disciplina.getCodCurso();
+
+        String line = ("\n"+nDisc+","+cDisc+","+data+","+hInicio+","+hDiarias+","+cCurso);
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
+            writer.append(line);
+            writer.flush();
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+        //----------------------------- Sessão Professor ------------------------------- 
     public static ListaLib<Professor> getProfessor(){
-    	ListaLib<Professor> prof = new ListaLib<>();
-    	BufferedReader read = null;
+    	ListaLib<Professor> professores = new ListaLib<>();
+    	BufferedReader reader = null;
     	String line = "";
         String fileName = "";
 
@@ -73,8 +102,8 @@ public class CSVController {
             reader.readLine(); //Pula o cabeçalho do arquivo
             while ((line = reader.readLine()) != null) { //
                 String[] row = line.split(",");
-                Professor prof  = new Professor(row[0], row[1], row[2]);
-                prof.addLast(prof);
+                Professor prof  = new Professor(row[0], row[1], Double.parseDouble(row[2]));
+                professores.addLast(prof);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,7 +114,7 @@ public class CSVController {
                 e.printStackTrace();
             }
         }
-        return prof;
+        return professores;
     }
 
     private static String getOS() {
@@ -94,5 +123,4 @@ public class CSVController {
 	}
                 
     	
-    }
 }
