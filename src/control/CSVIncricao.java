@@ -13,19 +13,26 @@ import model.Inscricao;
 public class CSVIncricao {
     static String os = CSVController.getOS();
 
+    //Get File Name Inscrição
+    
+    private static String getFileNameInscricao() {
+    	String fileName = "";
+    	if (os.contains("Windows")) {
+    		fileName = ".\\files\\inscricao.csv"
+    	} else {
+    		fileName = "./files//inscricao.csv";
+    	}
+    	return fileName;
+    }
+    
     // Get Inscrição -- Read
+    
     public static ListaLib<Inscricao> getInscricao() {
         ListaLib<Inscricao> inscricao = new ListaLib<>();
         BufferedReader reader = null;
         String line = "";
-        String fileName = "";
+        String fileName = getFileNameInscricao;
 
-        if (os.contains("Windows")) {
-            fileName = ".\\files\\inscricao.csv";
-
-        } else {
-            fileName = "./files/inscricao.csv";
-        }
         try {
             reader = new BufferedReader(new FileReader(fileName));
             reader.readLine();
@@ -47,20 +54,14 @@ public class CSVIncricao {
     }
     // Get Inscrição -- Create
 
-    public static void addInscricao(Inscricao inscricao) {
+    public static void addInscricao(Inscricao insc) {
 
         String line = "";
-        String fileName = "";
+        String fileName = getFileNameInscricao;
 
-        if (os.contains("Windows")) {
-            fileName = ".\\files\\inscricao.csv";
-        } else {
-            fileName = "./files/inscricao.csv";
-        }
-
-        String cInscProc = inscricao.getCodProcesso();
-        String cpfInsc = inscricao.getCPF();
-        String cInscDisc = inscricao.getCodigoDisciplina();
+        String cInscProc = insc.getCodProcesso();
+        String cpfInsc = insc.getCPF();
+        String cInscDisc = insc.getCodigoDisciplina();
 
         line = ("\n" + cInscProc + "," + cpfInsc + "," + cInscDisc);
 
@@ -71,5 +72,60 @@ public class CSVIncricao {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // Update All Inscrição
+    
+    private static void updateAllInscricao(ListaLib<Inscricao> inscricao) throws Exception {
+    	String fileName = getFileNameInscricao();
+    	String cabecalho = "Código do processo,CPF,Código Disciplina";
+    	int t = inscricao.size();
+    	
+    	try (PrintWriter writer = new PrintWriter(newFIleWriter(fileName))) {
+    		writer.append(cabecalho);
+    		for (int tamanho = 0; tamanho < t; tamanho++) {
+    			Inscricao inscri = inscricao.get(tamanho);
+    			
+    			String cInscProc = inscri.getCodProcesso();
+    			String cpfInsc = inscri.getCPF();
+    			String cInscDisc = inscri.getCodigoDisciplina();
+    			
+    			String line = ("\n" + cInscProc + "," + cpfInsc + "," + cInscDisc);
+    			writer.append(line);
+    		}
+    		writer.flush();
+    		writer.close();
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    // Remove Inscrição - Delete
+    
+    public static void removeInscricao(int i) throws Exception {
+    	ListaLib<Inscricao> inscricao = new ListaLib<>();
+    	inscricao = getInscricao();
+    	try {
+    		inscricao.remove(i);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	} finally {
+    		updateAllInscricao(inscricao);
+    	}
+    }
+    
+    // Update Inscrição - Update
+    
+    public static void updateInscricao(Inscricao insc, int i) throws Exception {
+    	ListaLib<Inscricao> inscricao = new Listalib<>();
+    	inscricao = getInscricao();
+    	try {
+    		inscricao.remove(i);
+    		inscricao.add(insc, i);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	} finally {
+    		updateAllInscricao(inscricao);
+    	}
     }
 }
