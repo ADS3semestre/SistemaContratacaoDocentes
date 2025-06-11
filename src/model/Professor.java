@@ -4,11 +4,21 @@ public class Professor {
 	private String CPF;
 	private String Nome;
 	private double quantidadePontos;
+	private String area;
 	
 	public Professor(String CPF, String Nome, double quantidadePontos) {
 		this.CPF = CPF;
 		this.Nome = Nome;
 		this.quantidadePontos = quantidadePontos;
+		this.area = area;
+	}
+
+	public String getArea() {
+		return area;
+	}
+
+	public void setArea(String area) {
+		this.area = area;
 	}
 
 	public String getCPF() {
