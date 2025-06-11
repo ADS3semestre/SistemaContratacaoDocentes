@@ -148,6 +148,7 @@ public class CSVController {
     }
 
     // ----------------------------- Sessão Professor -------------------------------
+    // Get Professor -- Read
     public static ListaLib<Professor> getProfessor() {
         ListaLib<Professor> professores = new ListaLib<>();
         BufferedReader reader = null;
@@ -155,9 +156,9 @@ public class CSVController {
         String fileName = "";
 
         if (os.contains("Windows")) {
-            fileName = ".\\files\\disciplinas.csv";
+            fileName = ".\\files\\professor.csv";
         } else {
-            fileName = "./files//disciplinas.csv";
+            fileName = "./files/professor.csv";
         }
 
         try {
@@ -179,7 +180,32 @@ public class CSVController {
         }
         return professores;
     }
+    // Get Professor -- Create
 
+    public static void addProfessor(Professor professor){
+        String line = "";
+        String fileName = "";
+        
+        if (os.contains("Windows")) {
+            fileName = ".\\files\\professor.csv";
+        } else {
+            fileName = "./files/professor.csv";
+        }
+        
+        String cpfProf = professor.getCPF();
+        String nome = professor.getNome();
+        Double qtdPontos = professor.getQuantidadePontos();
+
+        line = ("\n" + cpfProf + "," + nome + "," + qtdPontos);
+
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
+            writer.append(line);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     // -------------------------------Sessão Inscrição----------------------------------
 
     // Get Inscrição -- Read

@@ -6,6 +6,7 @@ import control.CSVController;
 import model.Disciplinas;
 import model.Cursos;
 import model.Inscricao;
+import model.Professor;
 
 public class main {
     public static void main(String[] args) throws Exception {
@@ -26,5 +27,8 @@ public class main {
         Cursos curso = new Cursos("Teste", "Teste", 1110486);
         CSVController.addCurso(curso);
         */
+
+        /* Professor professor = new Professor("4444444444", "Leandro", 344.3);
+        CSVController.addProfessor(professor); */
     }
 }
