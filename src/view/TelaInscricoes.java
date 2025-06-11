@@ -11,6 +11,9 @@ import com.destny.model.ListaLib;
 import model.Inscricao;
 import model.Professor;
 import control.CSVController;
+import control.CSVDisciplinas;
+import control.CSVIncricao;
+import control.CSVProfessor;
 import model.Disciplinas;
 
 import javax.swing.JButton;
@@ -42,9 +45,9 @@ public class TelaInscricoes extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaLib<Inscricao> listaInsc = CSVController.getInscricao();
-					ListaLib<Professor> listaProf = CSVController.getProfessor();
-					ListaLib<Disciplinas> listaDisc = CSVController.getDisciplinas();
+					ListaLib<Inscricao> listaInsc = CSVIncricao.getInscricao();
+					ListaLib<Professor> listaProf = CSVProfessor.getProfessor();
+					ListaLib<Disciplinas> listaDisc = CSVDisciplinas.getDisciplinas();
 					TelaInscricoes frame = new TelaInscricoes(listaInsc, listaProf, listaDisc);
 					frame.setVisible(true);
 				} catch (Exception e) {

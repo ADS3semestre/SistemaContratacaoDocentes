@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import com.destny.model.ListaLib;
 
 import control.CSVController;
+import control.CSVCursos;
 import model.Cursos;
 import model.Disciplinas;
 
@@ -39,7 +40,7 @@ public class TelaCursos extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaLib<Cursos> listaCurs = CSVController.getCursos();
+					ListaLib<Cursos> listaCurs = CSVCursos.getCursos();
 					TelaCursos frame = new TelaCursos(listaCurs);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -134,7 +135,7 @@ public class TelaCursos extends JFrame {
 				
 				panelContainer.add(panel);
 				panelContainer.add(Box.createVerticalStrut(20));
-				panelContainer.setPreferredSize(new java.awt.Dimension(520,((90+20)*tam)));
+				panelContainer.setPreferredSize(new java.awt.Dimension(520,((txtCurso.getPreferredSize().height+100)*tam)));
 
 		}
 		
