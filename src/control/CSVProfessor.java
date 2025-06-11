@@ -11,20 +11,14 @@ import com.destny.model.ListaLib;
 import model.Professor;
 
 public class CSVProfessor {
-    static String os = CSVController.getOS();
-
+    
     // Get Professor -- Read
     public static ListaLib<Professor> getProfessor() {
         ListaLib<Professor> professores = new ListaLib<>();
         BufferedReader reader = null;
         String line = "";
-        String fileName = "";
+        String fileName = CSVController.getFileName("professor.csv");
 
-        if (os.contains("Windows")) {
-            fileName = ".\\files\\professor.csv";
-        } else {
-            fileName = "./files/professor.csv";
-        }
 
         try {
             reader = new BufferedReader(new FileReader(fileName));
@@ -49,14 +43,8 @@ public class CSVProfessor {
 
     public static void addProfessor(Professor professor) {
         String line = "";
-        String fileName = "";
-
-        if (os.contains("Windows")) {
-            fileName = ".\\files\\professor.csv";
-        } else {
-            fileName = "./files/professor.csv";
-        }
-
+        String fileName = CSVController.getFileName("professor.csv");
+       
         String cpfProf = professor.getCPF();
         String nome = professor.getNome();
         Double qtdPontos = professor.getQuantidadePontos();
@@ -70,5 +58,62 @@ public class CSVProfessor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+       //Update All Professor
+    private static void updateAllProfessor(ListaLib<Professor> professor) throws Exception{
+        String fileName = CSVController.getFileName("professor.csv");
+        String cabecalho = "Professor, CPF, Nome, Quantidade de Pontos";
+        int i = professor.size();
+
+        try(PrintWriter writer = new PrintWriter(new FileWriter(fileName))){
+            writer.append(cabecalho);
+            for(int tamanho = 0; tamanho <i; tamanho++){
+                Professor prof = professor.get(tamanho);
+
+                String cPF = prof.getCPF();
+                String nome = prof.getNome();
+                String qtdPontos = Double.toString(prof.getQuantidadePontos());
+
+                 String line = ("\n" + cPF + "," + nome + "," + qtdPontos);
+                 writer.append(line);
+            }
+            writer.flush();
+            writer.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+
+    }
+}
+     // Remove Professor - Delete
+    public static void removeProfessor(int i) throws Exception{
+        ListaLib<Professor> professor = new ListaLib<>();
+        professor = getProfessor();
+        try{
+            professor.remove(i);
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            updateAllProfessor(professor);
+        }
+    }
+
+
+      //Update Professor - Update
+    public static void updateProfessor(Professor prof, int i) throws Exception{
+        ListaLib<Professor> professor = new ListaLib<>();
+        professor = getProfessor();
+        try{
+            professor.remove(i);
+            professor.add(prof, i);
+        } catch(Exception e){
+            e.printStackTrace();
+        } finally {
+            updateAllProfessor(professor);
+        }
+
+   
+  
+
     }
 }
