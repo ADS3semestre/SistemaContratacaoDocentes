@@ -204,11 +204,15 @@ public class CSVController {
             writer.append(cabecalho);
             for(int tamanho = 0; tamanho <i; tamanho++){
                 Professor prof = professor.get(tamanho);
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
                 String cPF = professor.getCPF();
                 String nome = professor.getNome();
                 String qtdPontos = Double.parseDouble(professor.getQuantidadePontos());
 
+<<<<<<< Updated upstream
                  String line = ("\n" + prof + "," + cPF + "," + nome + "," + qtdPontos);
                  writer.append(line);
             }
@@ -234,6 +238,19 @@ public class CSVController {
     }
 
 
+=======
+                 String line = ("\n" + + "," + c + "," + data + "," + hInicio + "," + hDiarias + ","
+                        + cCurso);
+                writer.append(line);
+
+
+            }
+        }
+
+
+    }
+
+>>>>>>> Stashed changes
       //Update Professor - Update
     public static void updateProfessor(Professor professor, int i) throws Exception{
         ListaLib<Professor> professor = new ListaLib<>();
@@ -247,7 +264,22 @@ public class CSVController {
             updateAllProfessor(professor);
         }
 
+<<<<<<< Updated upstream
    
+=======
+    // Remove Professor - Delete
+    public static void removeProfessor(Professor professor, int i) throws Exception{
+        ListaLib<Professor> professor = new ListaLib<>();
+        professor = getProfessor();
+        try{
+            professor.remove(i);
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            updateAllProfessor(professor);
+        }
+    }
+>>>>>>> Stashed changes
   
 
     }
