@@ -13,32 +13,20 @@ import model.Disciplinas;
 
 public class CSVDisciplinas {
     static String os = CSVController.getOS();
-    
-    // Get File Name Disciplina
-    private static String getFileNameDisciplina() {
-        String fileName = "";
-        if (os.contains("Windows")) {
-            fileName = ".\\files\\disciplinas.csv";
-        } else {
-            fileName = "./files//disciplinas.csv";
-        }
-        return fileName;
-    }
 
     // Get Disciplinas - Read
     public static ListaLib<Disciplinas> getDisciplinas() {
         ListaLib<Disciplinas> disciplinas = new ListaLib<>();
         BufferedReader reader = null;
         String line = "";
-        String fileName = getFileNameDisciplina();
+        String fileName = CSVController.getFileName("disciplinas.csv");
 
         try {
             reader = new BufferedReader(new FileReader(fileName));
             reader.readLine(); // Pula o cabeçalho do arquivo
             while ((line = reader.readLine()) != null) { //
                 String[] row = line.split(",");
-                Disciplinas disciplina = new Disciplinas(row[0], row[1], row[2], LocalTime.parse(row[3]),
-                        Integer.parseInt(row[4]), row[5]);
+                Disciplinas disciplina = new Disciplinas(row[0], row[1], row[2], LocalTime.parse(row[3]), Integer.parseInt(row[4]), row[5]);
                 disciplinas.addLast(disciplina);
             }
         } catch (Exception e) {
@@ -54,8 +42,9 @@ public class CSVDisciplinas {
     }
 
     // Add Disciplinas - Create
-    public static void addDiciplina(Disciplinas disciplina) {
-        String fileName = getFileNameDisciplina();
+    public static void addDisciplina(Disciplinas disciplina) {
+        String fileName = CSVController.getFileName("disciplinas.csv");
+
 
         String cDisc = disciplina.getCodigoDisciplina();
         String nDisc = disciplina.getNomeDisciplina();
@@ -78,7 +67,8 @@ public class CSVDisciplinas {
 
     // Update All Disciplinas
     private static void updateAllDisciplinas(ListaLib<Disciplinas> disciplinas) throws Exception {
-        String fileName = getFileNameDisciplina();
+        String fileName = CSVController.getFileName("disciplinas.csv");
+
         String cabecalho = "Disciplina,Código,Dia,Hora Inicial,Horas diárias,Codigo do Curso";
         int t = disciplinas.size();
 
@@ -106,7 +96,7 @@ public class CSVDisciplinas {
     }
 
     // Remove Disciplina - Delete
-    public static void removeDisciplina(Disciplinas disciplina, int i) throws Exception {
+    public static void removeDisciplina(int i) throws Exception {
         ListaLib<Disciplinas> disciplinas = new ListaLib<>();
         disciplinas = getDisciplinas();
         try {

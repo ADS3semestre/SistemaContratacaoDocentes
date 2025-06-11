@@ -19,7 +19,7 @@ public class CSVCursos {
     	if (os.contains("Windows")) {
     		fileName = ".\\files\\cursos.csv";
     	} else {
-    		fileName = "./files//disciplinas.csv";
+    		fileName = "./files/disciplinas.csv";
     	}
     	return fileName;
     }
@@ -31,7 +31,7 @@ public class CSVCursos {
         ListaLib<Cursos> cursos = new ListaLib<>();
         BufferedReader reader = null;
         String line = "";
-        String fileName = getFileNameCursos;
+        String fileName = getFileNameCursos();
 
 
         try {
@@ -57,7 +57,7 @@ public class CSVCursos {
     // Cursos -- Create
     
     public static void addCurso(Cursos curso) {
-        String fileName = getFileNameCursos;
+        String fileName = getFileNameCursos();
 
         String nCurso = curso.getNome();
         String aCurso = curso.getArea();
@@ -80,7 +80,7 @@ public class CSVCursos {
     private static void updateAllCursos(ListaLib<Cursos> cursos) throws Exception {
     	String fileName = getFileNameCursos();
     	String cabecalho = "Nome,Área,Código";
-    	int t = disciplinas.size();
+    	int t = cursos.size();
     	
     	try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
     		writer.append(cabecalho);

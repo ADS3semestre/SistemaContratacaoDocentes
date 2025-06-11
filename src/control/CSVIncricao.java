@@ -18,7 +18,7 @@ public class CSVIncricao {
     private static String getFileNameInscricao() {
     	String fileName = "";
     	if (os.contains("Windows")) {
-    		fileName = ".\\files\\inscricao.csv"
+    		fileName = ".\\files\\inscricao.csv";
     	} else {
     		fileName = "./files//inscricao.csv";
     	}
@@ -31,7 +31,7 @@ public class CSVIncricao {
         ListaLib<Inscricao> inscricao = new ListaLib<>();
         BufferedReader reader = null;
         String line = "";
-        String fileName = getFileNameInscricao;
+        String fileName = getFileNameInscricao();
 
         try {
             reader = new BufferedReader(new FileReader(fileName));
@@ -57,7 +57,7 @@ public class CSVIncricao {
     public static void addInscricao(Inscricao insc) {
 
         String line = "";
-        String fileName = getFileNameInscricao;
+        String fileName = getFileNameInscricao();
 
         String cInscProc = insc.getCodProcesso();
         String cpfInsc = insc.getCPF();
@@ -78,10 +78,10 @@ public class CSVIncricao {
     
     private static void updateAllInscricao(ListaLib<Inscricao> inscricao) throws Exception {
     	String fileName = getFileNameInscricao();
-    	String cabecalho = "Código do processo,CPF,Código Disciplina";
+    	String cabecalho = "Código do Processo,CPF,Código da Disciplina";
     	int t = inscricao.size();
     	
-    	try (PrintWriter writer = new PrintWriter(newFIleWriter(fileName))) {
+    	try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
     		writer.append(cabecalho);
     		for (int tamanho = 0; tamanho < t; tamanho++) {
     			Inscricao inscri = inscricao.get(tamanho);
@@ -117,7 +117,7 @@ public class CSVIncricao {
     // Update Inscrição - Update
     
     public static void updateInscricao(Inscricao insc, int i) throws Exception {
-    	ListaLib<Inscricao> inscricao = new Listalib<>();
+    	ListaLib<Inscricao> inscricao = new ListaLib<>();
     	inscricao = getInscricao();
     	try {
     		inscricao.remove(i);

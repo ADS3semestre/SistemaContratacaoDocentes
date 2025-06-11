@@ -1,5 +1,7 @@
 package control;
 
+import java.io.File;
+
 public class CSVController {
 
     public CSVController() {
@@ -11,4 +13,13 @@ public class CSVController {
         return os;
     }
 
+    public static String getFileName(String fileName){
+        String path = "";
+        if (getOS().contains("Windows")) {
+            path = ".\\files\\" + fileName;
+        } else {
+            path = "./files/" + fileName;
+        }
+        return path;
+    }
 }
