@@ -6,6 +6,7 @@ import view.TelaManterDisciplina;
 import model.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -16,6 +17,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import control.*;
 import javax.swing.JList;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -23,7 +26,6 @@ public class TelaDisciplinas extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private static int pos = 94;
 
 	/**
 	 * Launch the application.
@@ -59,102 +61,137 @@ public class TelaDisciplinas extends JFrame {
 		btnAdd.setBounds(6, 46, 538, 36);
 		contentPane.add(btnAdd);
 		
-			for(int i=0; i<listaDisc.size(); i++) {
-				Disciplinas disc = listaDisc.get(i);
-				
-				JPanel panel = new JPanel();
-				panel.setBackground(new Color(255, 255, 255));
-				panel.setBounds(6, pos, 538, 123);
-				contentPane.add(panel);
-				panel.setLayout(null);
-					
-					int posBtn = 6;
-					
-					JButton btnEdicao = new JButton("Editar");
-					btnEdicao.setIcon(new ImageIcon("./img/edit.png"));
-					btnEdicao.setBounds(419, posBtn, 110, 36);
-					panel.add(btnEdicao);
-					
-					posBtn += 36;
-					
-					JButton btnInsc = new JButton("Inscritos");
-					btnInsc.setIcon(new ImageIcon("./img/alunos.png"));
-					btnInsc.setBounds(419, posBtn, 110, 36);
-					panel.add(btnInsc);
-					
-					posBtn += 36;
-					
-					JButton btnApaga = new JButton("Apagar");
-					btnApaga.setIcon(new ImageIcon("./img/delete.png"));
-					btnApaga.setBounds(419, posBtn, 110, 36);
-					panel.add(btnApaga);
-					
-					ActionListener actListenerAdd = new ActionListener() {
-						public void actionPerformed(ActionEvent arg0) {
-							TelaManterDisciplina.main(false);
-							dispose();
-						}
-					};
-					
-					ActionListener actListenerEdit = new ActionListener() {
-						public void actionPerformed(ActionEvent arg0) {
-							TelaManterDisciplina.main(true);
-							dispose();
-						}
-					};
-					
-					ActionListener actListenerInsc = new ActionListener() {
-						public void actionPerformed(ActionEvent arg0) {
-							TelaDisciplinas_Inscritos.main(null);
-							dispose();
-						}
-					};
-					
-					btnAdd.addActionListener(actListenerAdd);
-					btnEdicao.addActionListener(actListenerEdit);
-					btnInsc.addActionListener(actListenerInsc);
-					
-					//----------------------------------------------------
-					
-					int posBlock = 6;
-					
-					JLabel txtDisc = new JLabel(disc.getNomeDisciplina());
-					txtDisc.setFont(new Font("Arial", Font.PLAIN, 16));
-					txtDisc.setBounds(6, posBlock, 238, 16);
-					panel.add(txtDisc);
-					
-					posBlock += 19;
-					
-					JLabel txtCodDisc = new JLabel(disc.getCodigoDisciplina());
-					txtCodDisc.setBounds(6, posBlock, 220, 16);
-					panel.add(txtCodDisc);
-					
-					posBlock += 16;
-					
-					JLabel txtDiaSemana = new JLabel(disc.getCodigoDisciplina());
-					txtDiaSemana.setBounds(6, posBlock, 220, 16);
-					panel.add(txtDiaSemana);
-					
-					posBlock += 16;
-					
-					JLabel txtHorarioIni = new JLabel(disc.getHoraInicio().toString());
-					txtHorarioIni.setBounds(6, posBlock, 220, 16);
-					panel.add(txtHorarioIni);
-					
-					posBlock += 16;
-					
-					JLabel txtHorasDia = new JLabel(Integer.toString(disc.getHorasDiarias()));
-					txtHorasDia.setBounds(6, posBlock, 220, 16);
-					panel.add(txtHorasDia);
-					
-					posBlock += 16;
-					
-					JLabel lblNewLabel = new JLabel(disc.getCodCurso());
-					lblNewLabel.setBounds(6, posBlock, 220, 16);
-					panel.add(lblNewLabel);
-				
-				pos += 135;
-			}
+		int pos = 94;
+		int tam = listaDisc.size();
+		// Painel que irá conter os painéis das disciplinas
+		
+		JPanel panelContainer = new JPanel();
+		panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
+
+
+		for (int i = 0; i < tam; i++) {
+			Disciplinas disc = listaDisc.get(i);
+
+			JPanel panel = new JPanel();
+			panel.setBackground(new Color(255, 255, 255));
+			//panel.setBounds(6, pos, 538, 123);
+			panel.setPreferredSize(new java.awt.Dimension(1024, 123));
+			panel.setMaximumSize(new java.awt.Dimension(1024, 123));
+			panel.setLayout(null);
+			
+
+			JButton btnEdicao = new JButton("Editar");
+			btnEdicao.setIcon(new ImageIcon("./img/edit.png"));
+			btnEdicao.setBounds(395, 6, 110, 36);
+			panel.add(btnEdicao);
+
+			JButton btnInsc = new JButton("Inscritos");
+			btnInsc.setIcon(new ImageIcon("./img/alunos.png"));
+			btnInsc.setBounds(395, 42, 110, 36);
+			panel.add(btnInsc);
+
+			JButton btnApaga = new JButton("Apagar");
+			btnApaga.setIcon(new ImageIcon("./img/delete.png"));
+			btnApaga.setBounds(395, 78, 110, 36);
+			panel.add(btnApaga);
+			
+			ActionListener actListenerAdd = new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					Disciplinas disciplina = new Disciplinas("","","",null,0,"");
+					TelaManterDisciplina.main(false,disciplina, 0);
+					dispose();
+				}
+			};
+			
+			final int posA = i;
+			
+			ActionListener actListenerEdit = new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					TelaManterDisciplina.main(true,disc,posA);
+					dispose();
+				}
+			};
+			
+			ActionListener actListenerInsc = new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					TelaDisciplinas_Inscritos.main(null);
+					dispose();
+				}
+			};
+			
+			final int val = i;
+			
+			ActionListener actListenerApaga = new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					try {
+						CSVController.removeDisciplina(val);
+						main(null);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					dispose();
+				}
+			};
+			
+			btnApaga.addActionListener(actListenerApaga);
+			btnAdd.addActionListener(actListenerAdd);
+			btnEdicao.addActionListener(actListenerEdit);
+			btnInsc.addActionListener(actListenerInsc);
+			
+			//----------------------------------------------------
+			
+			int posBlock = 6;
+			
+			JLabel txtDisc = new JLabel("Nome da Disciplina: " + disc.getNomeDisciplina());
+			txtDisc.setFont(new Font("Arial", Font.PLAIN, 16));
+			txtDisc.setBounds(6, posBlock, 350, 16);
+			panel.add(txtDisc);
+			
+			posBlock += 19;
+			
+			JLabel txtCodDisc = new JLabel("Código da Disciplina: " + disc.getCodigoDisciplina());
+			txtCodDisc.setBounds(6, posBlock, 350, 16);
+			panel.add(txtCodDisc);
+			
+			posBlock += 16;
+			
+			JLabel txtDiaSemana = new JLabel("Data ministrada: " + disc.getDataMinistrada());
+			txtDiaSemana.setBounds(6, posBlock, 350, 16);
+			panel.add(txtDiaSemana);
+			
+			posBlock += 16;
+			
+			JLabel txtHorarioIni = new JLabel("Horário inicial: " + disc.getHoraInicio().toString());
+			txtHorarioIni.setBounds(6, posBlock, 350, 16);
+			panel.add(txtHorarioIni);
+			
+			posBlock += 16;
+			
+			JLabel txtHorasDia = new JLabel("Horas por dia: " + Integer.toString(disc.getHorasDiarias()));
+			txtHorasDia.setBounds(6, posBlock, 350, 16);
+			panel.add(txtHorasDia);
+			
+			posBlock += 16;
+			
+			JLabel lblNewLabel = new JLabel("Código do curso: " + disc.getCodCurso());
+			lblNewLabel.setBounds(6, posBlock, 350, 16);
+			panel.add(lblNewLabel);
+		
+			pos += 135;
+
+			panelContainer.add(panel);
+			panelContainer.add(Box.createVerticalStrut(10)); 
+		}
+
+		// Coloca o painelContainer no JScrollPane
+		JScrollPane scrollPane = new JScrollPane(panelContainer);
+		scrollPane.setBounds(6, 94, 533, 200);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		contentPane.add(scrollPane);
+
+		
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.setIcon(new ImageIcon("./img/voltar.png"));

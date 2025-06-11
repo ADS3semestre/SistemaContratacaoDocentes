@@ -25,6 +25,8 @@ import javax.swing.JList;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.UIManager;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollPane;
 
@@ -32,7 +34,6 @@ public class TelaInscricoes extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private static int pos = 137;
 
 	/**
 	 * Launch the application.
@@ -41,10 +42,10 @@ public class TelaInscricoes extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaLib<Inscricao> listaInsc = CSVController.getDisciplinas();
-					ListaLib<Professor> listaProf = CSVController.getCSVdata("./files/disciplinas.csv");
+					ListaLib<Inscricao> listaInsc = CSVController.getInscricao();
+					ListaLib<Professor> listaProf = CSVController.getProfessor();
 					ListaLib<Disciplinas> listaDisc = CSVController.getDisciplinas();
-					TelaInscricoes frame = new TelaInscricoes(listaInsc, listaProf);
+					TelaInscricoes frame = new TelaInscricoes(listaInsc, listaProf, listaDisc);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -56,7 +57,7 @@ public class TelaInscricoes extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaInscricoes(ListaLib<Inscricao> listaInsc, ListaLib<Professor> listaProf,ListaLib<Disciplinas> listaDisc) {
+	public TelaInscricoes(ListaLib<Inscricao> listaInsc, ListaLib<Professor> listaProf,ListaLib<Disciplinas> listaDisc) throws Exception {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 349);
@@ -78,6 +79,11 @@ public class TelaInscricoes extends JFrame {
 		txtInscricoes.setBounds(227, 6, 108, 28);
 		contentPane.add(txtInscricoes);
 		
+		int pos = 137;
+		
+		JPanel panelContainer = new JPanel();
+		panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
+		
 		for(int i=0; i<listaInsc.size(); i++) {
 			
 			Inscricao insc = listaInsc.get(i);
@@ -90,43 +96,43 @@ public class TelaInscricoes extends JFrame {
 			panel.setLayout(null);
 			
 				JLabel txtNome = new JLabel();
-				txtNome.setBounds(6, posItn, 78, 19);
+				txtNome.setBounds(6, posItn, 300, 19);
 				panel.add(txtNome);
 				txtNome.setFont(new Font("Arial", Font.PLAIN, 16));
 				posItn += 19;
 				
 				JLabel txtCPF = new JLabel();
-				txtCPF.setBounds(6, posItn, 75, 16);
+				txtCPF.setBounds(6, posItn, 330, 16);
 				panel.add(txtCPF);
-				txtCPF.setText(insc.getCPF());
+				txtCPF.setText("CPF: " + insc.getCPF());
 				txtCPF.setFont(new Font("Arial", Font.PLAIN, 13));
 				posItn += 16;
 				
 				JLabel txtCod = new JLabel();
-				txtCod.setText(insc.getCodProcesso());
+				txtCod.setText("Código do processo: " + insc.getCodProcesso());
 				txtCod.setFont(new Font("Arial", Font.PLAIN, 13));
-				txtCod.setBounds(6, posItn, 110, 16);
+				txtCod.setBounds(6, posItn, 300, 16);
 				panel.add(txtCod);
 				posItn += 16;
 				
 				JLabel txtPont = new JLabel();
 				txtPont.setFont(new Font("Arial", Font.PLAIN, 13));
-				txtPont.setBounds(6, posItn, 110, 16);
+				txtPont.setBounds(6, posItn, 330, 16);
 				panel.add(txtPont);
 				
 				for (int j=0; j<listaProf.size(); j++) {
 					Professor prof = listaProf.get(j);
 					if(prof.getCPF() == insc.getCPF()) {
-						txtNome.setText(prof.getNome());
-						txtPont.setText(Double.toString(prof.getQuantidadePontos()));
+						txtNome.setText("Nome do professor: " + prof.getNome());
+						txtPont.setText("Quantidade de pontos: "+Double.toString(prof.getQuantidadePontos()));
 					}
 				}
 				
 				
 				JLabel txtCodDis = new JLabel();
-				txtCodDis.setText(insc.getCodigoDisciplina());
+				txtCodDis.setText("Código da disciplina: "+insc.getCodigoDisciplina());
 				txtCodDis.setFont(new Font("Arial", Font.PLAIN, 13));
-				txtCodDis.setBounds(6, posItn, 110, 16);
+				txtCodDis.setBounds(6, posItn, 300, 16);
 				panel.add(txtCodDis);
 				
 				int posBtn = 24;
@@ -134,18 +140,42 @@ public class TelaInscricoes extends JFrame {
 				
 				JButton btnNewButton_1 = new JButton("Editar");
 				btnNewButton_1.setIcon(new ImageIcon("./img/edit.png"));
-				btnNewButton_1.setBounds(437, posBtn, 90, 36);
+				btnNewButton_1.setBounds(437, posBtn, 96, 36);
 				panel.add(btnNewButton_1);
 				posBtn += 40;
 				
 				JButton btnNewButton_1_1 = new JButton("Apagar");
 				btnNewButton_1_1.setIcon(new ImageIcon("./img/delete.png"));
-				btnNewButton_1_1.setBounds(437, posBtn, 90, 36);
+				btnNewButton_1_1.setBounds(437, posBtn, 96, 36);
 				panel.add(btnNewButton_1_1);
 				
 				pos += 145;
+				
+				ActionListener actListenerAdd = new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						TelaManterInscricao.main(false);
+						dispose();
+					}
+				};
+				
+				ActionListener actListenerEdit = new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						TelaManterInscricao.main(true);
+						dispose();
+					}
+				};
+				
+				btnInsc.addActionListener(actListenerAdd);
+				btnNewButton_1.addActionListener(actListenerEdit);
 		
+				panelContainer.add(panel);
+				panelContainer.add(Box.createVerticalStrut(10));
 		}
+		
+		// Coloca o painelContainer no JScrollPane
+		JScrollPane scrollPane = new JScrollPane(panelContainer);
+		scrollPane.setBounds(6, 94, 533, 200);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
 		String[] vet = new String[listaDisc.size()];
 		for(int i=0; i<listaDisc.size(); i++) {
@@ -187,21 +217,6 @@ public class TelaInscricoes extends JFrame {
 		
 		btnVoltar.addActionListener(actListenerBack);
 		
-		ActionListener actListenerAdd = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				TelaManterInscricao.main(false);
-				dispose();
-			}
-		};
 		
-		ActionListener actListenerEdit = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				TelaManterInscricao.main(true);
-				dispose();
-			}
-		};
-		
-		btnInsc.addActionListener(actListenerAdd);
-		btnNewButton_1.addActionListener(actListenerEdit);
 	}
 }

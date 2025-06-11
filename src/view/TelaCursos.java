@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import com.destny.model.ListaLib;
@@ -21,6 +22,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JList;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -28,7 +31,6 @@ public class TelaCursos extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private static int pos = 94;
 	
 	/**
 	 * Launch the application.
@@ -37,7 +39,7 @@ public class TelaCursos extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaLib<Cursos> listaCurs = CSVController.getCSVdata("./files/disciplinas.csv");
+					ListaLib<Cursos> listaCurs = CSVController.getCursos();
 					TelaCursos frame = new TelaCursos(listaCurs);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -64,49 +66,84 @@ public class TelaCursos extends JFrame {
 		btnAdd.setBounds(6, 46, 538, 36);
 		contentPane.add(btnAdd);
 		
-		for(int i=0; i<listaCurs.size(); i++) {
+		int pos = 94;
+		
+		JPanel panelContainer = new JPanel();
+		panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
+		
+		int tam = listaCurs.size();
+		for(int i=0; i<tam; i++) {
 			
-			int posItn = 6;
 			Cursos curs = listaCurs.get(i);
 		
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(255, 255, 255));
-			panel.setBounds(6, pos, 538, 73);
+			panel.setBounds(6, pos, 538, 90);
 			contentPane.add(panel);
 			panel.setLayout(null);
 			
 				JButton btnEditar = new JButton("Editar");
 				btnEditar.setIcon(new ImageIcon("./img/edit.png"));
-				btnEditar.setBounds(337, 17, 90, 36);
+				btnEditar.setBounds(325, 17, 90, 36);
 				panel.add(btnEditar);
 				
 				JButton btnApagar = new JButton("Apagar");
 				btnApagar.setIcon(new ImageIcon("./img/delete.png"));
-				btnApagar.setBounds(436, 17, 90, 36);
+				btnApagar.setBounds(420, 17, 90, 36);
 				panel.add(btnApagar);
 				
 				//-------------------------------------------
 				
-				JLabel txtCurso = new JLabel(curs.getNome());
+				JLabel txtCurso = new JLabel("<html><div style='width:250px;'>Nome do curso: " + curs.getNome()+"</html>");
 				txtCurso.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-				txtCurso.setBounds(6, posItn, 268, 16);
 				panel.add(txtCurso);
+				txtCurso.setSize(300, Short.MAX_VALUE);
+				txtCurso.setBounds(6, 6, 300, txtCurso.getPreferredSize().height);
 				
-				posItn += 16;
+				int posTxt = 6 + txtCurso.getPreferredSize().height + 4;
 				
-				JLabel txtCodigo = new JLabel(Integer.toString(curs.getCodigo()));
-				txtCodigo.setBounds(6, posItn, 268, 16);
+				
+				JLabel txtCodigo = new JLabel("Código do curso: " + Integer.toString(curs.getCodigo()));
+				txtCodigo.setBounds(6, posTxt, 350, 16);
 				panel.add(txtCodigo);
 				
-				posItn += 16;
+				posTxt += 20;
 				
-				JLabel txtArea = new JLabel(curs.getArea());
-				txtArea.setBounds(6, posItn, 268, 16);
+				JLabel txtArea = new JLabel("Área do curso: " + curs.getArea());
+				txtArea.setBounds(6, posTxt, 350, 16);
 				panel.add(txtArea);
 				
 				pos += 90;
-		
+				
+				ActionListener actListenerAdd = new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						TelaManterCursos.main(false);
+						dispose();
+					}
+				};
+				
+				ActionListener actListenerEdit = new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						TelaManterCursos.main(true);
+						dispose();
+					}
+				};
+				
+				btnAdd.addActionListener(actListenerAdd);
+				btnEditar.addActionListener(actListenerEdit);
+				
+				panelContainer.add(panel);
+				panelContainer.add(Box.createVerticalStrut(20));
+				panelContainer.setPreferredSize(new java.awt.Dimension(520,((90+20)*tam)));
+
 		}
+		
+		// Coloca o painelContainer no JScrollPane
+		JScrollPane scrollPane = new JScrollPane(panelContainer);
+		scrollPane.setBounds(6, 94, 533, 200);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		contentPane.add(scrollPane);
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.setIcon(new ImageIcon("./img/voltar.png"));
@@ -127,23 +164,6 @@ public class TelaCursos extends JFrame {
 		
 		btnVoltar.addActionListener(actListenerBack);
 		
-		
-		ActionListener actListenerAdd = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				TelaManterCursos.main(false);
-				dispose();
-			}
-		};
-		
-		ActionListener actListenerEdit = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				TelaManterCursos.main(true);
-				dispose();
-			}
-		};
-		
-		btnAdd.addActionListener(actListenerAdd);
-		btnEditar.addActionListener(actListenerEdit);
 	}
 	
 	
