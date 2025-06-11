@@ -1,7 +1,5 @@
 package control;
 
-import java.io.File;
-
 public class CSVController {
 
     public CSVController() {

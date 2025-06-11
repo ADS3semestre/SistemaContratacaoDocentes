@@ -10,22 +10,23 @@ import model.Professor;
 
 public class main {
     public static void main(String[] args) throws Exception {
-        
+        /* 
         LocalTime time = LocalTime.parse("21:10:00");
         Disciplinas disc = new Disciplinas("Sistemas Operacionais I","ISO001","Terça-Feira",time,4,"1110482");
         //Disciplinas disc = new Disciplinas("Wellington","IHC001","Quarta-Feira",time,2,"1110482");
         int i = 4;
         CSVDisciplinas.removeDisciplina(i);
-        
-        //Testando Inscrição
+        */
         /* 
-        Inscricao insc = new Inscricao("20260111104", "32578964726", "ISO001");
-        CSVController.addInscricao(insc);
+        //Testando Inscrição
+        
+        Inscricao insc = new Inscricao("20260111104", "32578964726", "TESTTETESET");
+        CSVIncricao.updateInscricao(insc, 3);
         */
         //Testando Cursos
         /* 
         Cursos curso = new Cursos("Teste", "Teste", 1110486);
-        CSVController.addCurso(curso);
+        CSVCursos.updateCursos(curso, 3);
         */
 
         /* Professor professor = new Professor("4444444444", "Leandro", 344.3);
