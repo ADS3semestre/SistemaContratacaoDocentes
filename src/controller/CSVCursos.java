@@ -1,4 +1,4 @@
-package control;
+package controller;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -18,7 +18,7 @@ public class CSVCursos {
         ListaLib<Cursos> cursos = new ListaLib<>();
         BufferedReader reader = null;
         String line = "";
-        String fileName = CSVcontroller.getFileName("cursos.csv");
+        String fileName = CSVController.getFileName("cursos.csv");
 
 
         try {

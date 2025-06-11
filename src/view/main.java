@@ -2,7 +2,7 @@ package view;
 
 import java.awt.Cursor;
 import java.time.LocalTime;
-import control.*;
+import controller.*;
 import model.Disciplinas;
 import model.Cursos;
 import model.Inscricao;

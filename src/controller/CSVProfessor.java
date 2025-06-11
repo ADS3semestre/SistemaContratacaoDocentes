@@ -1,4 +1,4 @@
-package control;
+package controller;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -23,7 +23,7 @@ public class CSVProfessor {
         try {
             reader = new BufferedReader(new FileReader(fileName));
             reader.readLine(); // Pula o cabeçalho do arquivo
-            while ((line = reader.readLine()) != null) { //
+            while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
                 Professor prof = new Professor(row[0], row[1], Double.parseDouble(row[2]));
                 professores.addLast(prof);
@@ -39,7 +39,7 @@ public class CSVProfessor {
         }
         return professores;
     }
-    // Get Professor -- Create
+    // Add Professor -- Create
 
     public static void addProfessor(Professor professor) {
         String line = "";
@@ -59,7 +59,7 @@ public class CSVProfessor {
             e.printStackTrace();
         }
     }
-       //Update All Professor
+       //Update All Professores
     private static void updateAllProfessor(ListaLib<Professor> professor) throws Exception{
         String fileName = CSVController.getFileName("professor.csv");
         String cabecalho = "Professor, CPF, Nome, Quantidade de Pontos";

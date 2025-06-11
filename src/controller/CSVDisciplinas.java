@@ -1,4 +1,4 @@
-package control;
+package controller;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,16 +7,16 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalTime;
 
+import com.destny.fila.Fila;
 import com.destny.model.ListaLib;
+
 
 import model.Disciplinas;
 
-public class CSVDisciplinas {
-    static String os = CSVController.getOS();
-
+public class CSVDisciplinas{
     // Get Disciplinas - Read
-    public static ListaLib<Disciplinas> getDisciplinas() {
-        ListaLib<Disciplinas> disciplinas = new ListaLib<>();
+    public static Fila<Disciplinas> getDisciplinas() {
+        Fila<Disciplinas> disciplinas = new Fila<>();
         BufferedReader reader = null;
         String line = "";
         String fileName = CSVController.getFileName("disciplinas.csv");
@@ -24,10 +24,10 @@ public class CSVDisciplinas {
         try {
             reader = new BufferedReader(new FileReader(fileName));
             reader.readLine(); // Pula o cabeçalho do arquivo
-            while ((line = reader.readLine()) != null) { //
+            while ((line = reader.readLine()) != null) { 
                 String[] row = line.split(",");
                 Disciplinas disciplina = new Disciplinas(row[0], row[1], row[2], LocalTime.parse(row[3]), Integer.parseInt(row[4]), row[5]);
-                disciplinas.addLast(disciplina);
+                disciplinas.Insert(disciplina);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,6 +40,16 @@ public class CSVDisciplinas {
         }
         return disciplinas;
     }
+    public static ListaLib<Disciplinas>getLista() throws Exception {
+        Fila<Disciplinas> discs = getDisciplinas();
+        ListaLib<Disciplinas> disciplinas = new ListaLib<>(); 
+        int t = discs.Size();
+        for (int i = 0; i < t; i++){
+            disciplinas.addLast(discs.Remove());
+        }
+        return disciplinas;
+    }
+
 
     // Add Disciplinas - Create
     public static void addDisciplina(Disciplinas disciplina) {
@@ -98,7 +108,7 @@ public class CSVDisciplinas {
     // Remove Disciplina - Delete
     public static void removeDisciplina(int i) throws Exception {
         ListaLib<Disciplinas> disciplinas = new ListaLib<>();
-        disciplinas = getDisciplinas();
+        disciplinas = getLista();
         try {
             disciplinas.remove(i);
         } catch (Exception e) {
@@ -111,7 +121,7 @@ public class CSVDisciplinas {
     // Update Disciplina - Update
     public static void updateDisciplina(Disciplinas disciplina, int i) throws Exception {
         ListaLib<Disciplinas> disciplinas = new ListaLib<>();
-        disciplinas = getDisciplinas();
+        disciplinas = getLista();
         try {
             disciplinas.remove(i);
             disciplinas.add(disciplina, i);
