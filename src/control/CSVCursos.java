@@ -11,27 +11,14 @@ import com.destny.model.ListaLib;
 import model.Cursos;
 
 public class CSVCursos {
-    static String os = CSVController.getOS();
 
-    // Get File Name Cursos
-    private static String getFileNameCursos() {
-    	String fileName = "";
-    	if (os.contains("Windows")) {
-    		fileName = ".\\files\\cursos.csv";
-    	} else {
-    		fileName = "./files/disciplinas.csv";
-    	}
-    	return fileName;
-    }
-    
-    
     // Cursos --- Read
     
     public static ListaLib<Cursos> getCursos() {
         ListaLib<Cursos> cursos = new ListaLib<>();
         BufferedReader reader = null;
         String line = "";
-        String fileName = getFileNameCursos();
+        String fileName = CSVcontroller.getFileName("cursos.csv");
 
 
         try {
@@ -57,7 +44,7 @@ public class CSVCursos {
     // Cursos -- Create
     
     public static void addCurso(Cursos curso) {
-        String fileName = getFileNameCursos();
+        String fileName = CSVController.getFileName("cursos.csv");
 
         String nCurso = curso.getNome();
         String aCurso = curso.getArea();
@@ -78,7 +65,7 @@ public class CSVCursos {
     // Update All Cursos
     
     private static void updateAllCursos(ListaLib<Cursos> cursos) throws Exception {
-    	String fileName = getFileNameCursos();
+    	String fileName = CSVController.getFileName("cursos.csv");
     	String cabecalho = "Nome,Área,Código";
     	int t = cursos.size();
     	

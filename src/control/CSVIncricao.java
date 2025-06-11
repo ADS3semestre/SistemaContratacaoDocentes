@@ -11,27 +11,14 @@ import com.destny.model.ListaLib;
 import model.Inscricao;
 
 public class CSVIncricao {
-    static String os = CSVController.getOS();
 
-    //Get File Name Inscrição
-    
-    private static String getFileNameInscricao() {
-    	String fileName = "";
-    	if (os.contains("Windows")) {
-    		fileName = ".\\files\\inscricao.csv";
-    	} else {
-    		fileName = "./files//inscricao.csv";
-    	}
-    	return fileName;
-    }
-    
     // Get Inscrição -- Read
     
     public static ListaLib<Inscricao> getInscricao() {
         ListaLib<Inscricao> inscricao = new ListaLib<>();
         BufferedReader reader = null;
         String line = "";
-        String fileName = getFileNameInscricao();
+        String fileName = CSVController.getFileName("inscricao.csv");
 
         try {
             reader = new BufferedReader(new FileReader(fileName));
@@ -57,7 +44,7 @@ public class CSVIncricao {
     public static void addInscricao(Inscricao insc) {
 
         String line = "";
-        String fileName = getFileNameInscricao();
+        String fileName = CSVController.getFileName("inscricao.csv");
 
         String cInscProc = insc.getCodProcesso();
         String cpfInsc = insc.getCPF();
@@ -77,7 +64,7 @@ public class CSVIncricao {
     // Update All Inscrição
     
     private static void updateAllInscricao(ListaLib<Inscricao> inscricao) throws Exception {
-    	String fileName = getFileNameInscricao();
+    	String fileName = CSVController.getFileName("inscricao.csv");
     	String cabecalho = "Código do Processo,CPF,Código da Disciplina";
     	int t = inscricao.size();
     	
