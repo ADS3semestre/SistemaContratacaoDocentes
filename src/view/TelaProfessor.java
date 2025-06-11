@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import com.destny.model.ListaLib;
@@ -21,6 +22,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JList;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -28,7 +31,6 @@ public class TelaProfessor extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private static int pos = 94;
 	
 	/**
 	 * Launch the application.
@@ -37,7 +39,7 @@ public class TelaProfessor extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaLib<Professor> listaProf = CSVController.getCSVdata("./files/disciplinas.csv");
+					ListaLib<Professor> listaProf = CSVController.getProfessor();
 					TelaProfessor frame = new TelaProfessor(listaProf);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -50,7 +52,7 @@ public class TelaProfessor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaProfessor(ListaLib<Professor> listaProf) {
+	public TelaProfessor(ListaLib<Professor> listaProf) throws Exception {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 349);
 		contentPane = new JPanel();
@@ -71,6 +73,11 @@ public class TelaProfessor extends JFrame {
 		txtProf.setText("Professores");
 		txtProf.setBounds(215, 6, 138, 28);
 		contentPane.add(txtProf);
+		
+		int pos = 94;
+		
+		JPanel panelContainer = new JPanel();
+		panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
 		
 		for(int i=0; i<listaProf.size(); i++) {
 					
@@ -95,25 +102,51 @@ public class TelaProfessor extends JFrame {
 					
 					//----------------------------------------------------------
 					
-					JLabel txtNome = new JLabel(prof.getNome());
+					JLabel txtNome = new JLabel("Nome: " + prof.getNome());
 					txtNome.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-					txtNome.setBounds(6, posItn, 272, 16);
+					txtNome.setBounds(6, posItn, 350, 16);
 					panel.add(txtNome);
 					
 					posItn += 16;
 					
-					JLabel txtCPF = new JLabel(prof.getCPF());
+					JLabel txtCPF = new JLabel("CPF: "+prof.getCPF());
 					txtCPF.setBounds(6, posItn, 272, 16);
 					panel.add(txtCPF);
 					
 					posItn += 16;
 					
-					JLabel txtPontos = new JLabel(Double.toString(prof.getQuantidadePontos()));
+					JLabel txtPontos = new JLabel("Pontos: "+Double.toString(prof.getQuantidadePontos()));
 					txtPontos.setBounds(6, posItn, 272, 16);
 					panel.add(txtPontos);
 					
 					pos += 80;
+					
+					ActionListener actListenerAdd = new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							TelaManterProfessor.main(false);
+							dispose();
+						}
+					};
+					
+					ActionListener actListenerEdit = new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							TelaManterProfessor.main(true);
+							dispose();
+						}
+					};
+					
+					btnAdd.addActionListener(actListenerAdd);
+					btnEdit.addActionListener(actListenerAdd);
+					
+					panelContainer.add(panel);
+					panelContainer.add(Box.createVerticalStrut(10));
 		}
+
+		JScrollPane scrollPane = new JScrollPane(panelContainer);
+		scrollPane.setBounds(6, 94, 533, 200);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		contentPane.add(scrollPane);
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.setIcon(new ImageIcon("./img/voltar.png"));
@@ -129,21 +162,5 @@ public class TelaProfessor extends JFrame {
 		
 		btnVoltar.addActionListener(actListenerBack);
 		
-		ActionListener actListenerAdd = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				TelaManterProfessor.main(false);
-				dispose();
-			}
-		};
-		
-		ActionListener actListenerEdit = new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				TelaManterProfessor.main(true);
-				dispose();
-			}
-		};
-		
-		btnAdd.addActionListener(actListenerAdd);
-		btnEdit.addActionListener(actListenerAdd);
 	}
 }

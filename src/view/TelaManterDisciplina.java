@@ -5,10 +5,19 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextPane;
+
+import com.destny.model.ListaLib;
+
+import control.CSVController;
+import model.Cursos;
+import model.Disciplinas;
+
+import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -23,26 +32,27 @@ public class TelaManterDisciplina extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField nomeDisciplina;
-	private JTextPane txtpnDigiteO;
+	private JLabel txtpnDigiteO;
 	private JTextField codDisciplina;
-	private JTextPane txtpnDigiteODia;
+	private JLabel txtpnDigiteODia;
 	private JComboBox diaSemana;
-	private JTextPane txtpnDigiteOHorrio;
+	private JLabel txtpnDigiteOHorrio;
 	private JTextField horarioDisciplina;
-	private JTextPane txtpnDigiteAQuantidade;
+	private JLabel txtpnDigiteAQuantidade;
 	private JTextField qtdHrsSemanais;
-	private JTextPane txtpnSelecioneOCurso;
+	private JLabel txtpnSelecioneOCurso;
 	private JComboBox cursoDisciplina;
 	private JButton btnNewButton;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(Boolean isEditMode) {
+	public static void main(Boolean isEditMode, Disciplinas disciplina, int pos) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaManterDisciplina frame = new TelaManterDisciplina(isEditMode);
+					
+					TelaManterDisciplina frame = new TelaManterDisciplina(isEditMode, disciplina,pos);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,7 +64,8 @@ public class TelaManterDisciplina extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaManterDisciplina(Boolean isEditMode) {
+	@SuppressWarnings("unchecked")
+	public TelaManterDisciplina(Boolean isEditMode, Disciplinas disciplina, int pos) throws Exception{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 413);
 		contentPane = new JPanel();
@@ -63,19 +74,20 @@ public class TelaManterDisciplina extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JTextPane txtpnAdicionarDisciplina = new JTextPane();
+		JLabel txtpnAdicionarDisciplina = new JLabel();
 		txtpnAdicionarDisciplina.setBackground(new Color(237, 238, 238));
-		if(isEditMode){
+		if (isEditMode) {
 			txtpnAdicionarDisciplina.setText("Editar Disciplina");
-		}else {
+		} else {
 			txtpnAdicionarDisciplina.setText("Adicionar Disciplina");
 		}
+		
+		
 		txtpnAdicionarDisciplina.setFont(new Font("Arial", Font.PLAIN, 24));
-		txtpnAdicionarDisciplina.setBounds(198, 6, 206, 31);
+		txtpnAdicionarDisciplina.setBounds(178, 6, 274, 31);
 		contentPane.add(txtpnAdicionarDisciplina);
 		
-		JTextPane txtpnDisciplina = new JTextPane();
-		txtpnDisciplina.setEditable(false);
+		JLabel txtpnDisciplina = new JLabel();
 		txtpnDisciplina.setText("Nome da disciplina");
 		txtpnDisciplina.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtpnDisciplina.setBackground(new Color(238, 238, 238));
@@ -87,8 +99,7 @@ public class TelaManterDisciplina extends JFrame {
 		contentPane.add(nomeDisciplina);
 		nomeDisciplina.setColumns(10);
 		
-		txtpnDigiteO = new JTextPane();
-		txtpnDigiteO.setEditable(false);
+		txtpnDigiteO = new JLabel();
 		txtpnDigiteO.setText("Código da disciplina");
 		txtpnDigiteO.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtpnDigiteO.setBackground(UIManager.getColor("Button.background"));
@@ -100,23 +111,22 @@ public class TelaManterDisciplina extends JFrame {
 		codDisciplina.setBounds(157, 100, 421, 37);
 		contentPane.add(codDisciplina);
 		
-		txtpnDigiteODia = new JTextPane();
-		txtpnDigiteODia.setEditable(false);
+		txtpnDigiteODia = new JLabel();
 		txtpnDigiteODia.setText("Dia da semana");
 		txtpnDigiteODia.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtpnDigiteODia.setBackground(UIManager.getColor("Button.background"));
 		txtpnDigiteODia.setBounds(20, 153, 132, 37);
 		contentPane.add(txtpnDigiteODia);
 		
+		String[] diaSemanaStr = {"Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"};
 		diaSemana = new JComboBox();
-		diaSemana.setModel(new DefaultComboBoxModel(new String[] {"Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"}));
+		diaSemana.setModel(new DefaultComboBoxModel(diaSemanaStr));
 		diaSemana.setFont(new Font("Arial", Font.PLAIN, 16));
 		diaSemana.setBounds(157, 149, 421, 41);
 		contentPane.add(diaSemana);
 		
-		txtpnDigiteOHorrio = new JTextPane();
-		txtpnDigiteOHorrio.setEditable(false);
-		txtpnDigiteOHorrio.setText("Horário inicial da disciplina");
+		txtpnDigiteOHorrio = new JLabel();
+		txtpnDigiteOHorrio.setText("Horário inicial");
 		txtpnDigiteOHorrio.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtpnDigiteOHorrio.setBackground(UIManager.getColor("Button.background"));
 		txtpnDigiteOHorrio.setBounds(20, 202, 132, 35);
@@ -128,9 +138,8 @@ public class TelaManterDisciplina extends JFrame {
 		horarioDisciplina.setBounds(157, 200, 421, 37);
 		contentPane.add(horarioDisciplina);
 		
-		txtpnDigiteAQuantidade = new JTextPane();
-		txtpnDigiteAQuantidade.setEditable(false);
-		txtpnDigiteAQuantidade.setText("Quantidade de horas semanais");
+		txtpnDigiteAQuantidade = new JLabel();
+		txtpnDigiteAQuantidade.setText("Horas semanais");
 		txtpnDigiteAQuantidade.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtpnDigiteAQuantidade.setBackground(UIManager.getColor("Button.background"));
 		txtpnDigiteAQuantidade.setBounds(20, 251, 132, 37);
@@ -141,8 +150,7 @@ public class TelaManterDisciplina extends JFrame {
 		qtdHrsSemanais.setBounds(157, 249, 421, 37);
 		contentPane.add(qtdHrsSemanais);
 		
-		txtpnSelecioneOCurso = new JTextPane();
-		txtpnSelecioneOCurso.setEditable(false);
+		txtpnSelecioneOCurso = new JLabel();
 		txtpnSelecioneOCurso.setText("Curso");
 		txtpnSelecioneOCurso.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtpnSelecioneOCurso.setBackground(UIManager.getColor("Button.background"));
@@ -150,7 +158,14 @@ public class TelaManterDisciplina extends JFrame {
 		contentPane.add(txtpnSelecioneOCurso);
 		
 		cursoDisciplina = new JComboBox();
-		cursoDisciplina.setModel(new DefaultComboBoxModel(new String[] {"curso"}));
+		ListaLib<Cursos> listaCurs = CSVController.getCursos();
+		String[] cursos = new String[listaCurs.size()];
+		for(int i=0; i<listaCurs.size(); i++) {
+			Cursos curs = listaCurs.get(i);
+			cursos[i] = curs.getNome();
+		};
+		
+		cursoDisciplina.setModel(new DefaultComboBoxModel(cursos));
 		cursoDisciplina.setBounds(156, 303, 423, 27);
 		contentPane.add(cursoDisciplina);
 		
@@ -164,6 +179,35 @@ public class TelaManterDisciplina extends JFrame {
 		btnVoltar.setBounds(6, 6, 92, 30);
 		contentPane.add(btnVoltar);
 		
+		//-------------- Edição de dados --------------
+		
+		if(isEditMode) {
+			nomeDisciplina.setText(disciplina.getNomeDisciplina());
+			codDisciplina.setText(disciplina.getCodigoDisciplina());
+			
+			for(int i=0; i<diaSemanaStr.length; i++) {
+				if (diaSemanaStr[i].equals(disciplina.getDataMinistrada())) {
+					diaSemana.setSelectedIndex(i);
+				}
+			}
+		
+			horarioDisciplina.setText(disciplina.getHoraInicio().toString());
+			qtdHrsSemanais.setText(Integer.toString(disciplina.getHorasDiarias()));
+			String nomeCurso = "";
+			for (int j=0; j<listaCurs.size(); j++) {
+				Cursos curs = listaCurs.get(j);
+				if(disciplina.getCodCurso().equals(curs.getCodigo())) {
+					nomeCurso = curs.getNome();
+				}
+			};
+			for(int i=0; i<cursos.length; i++) {
+				if (cursos[i].equals(nomeCurso)){
+					cursoDisciplina.setSelectedIndex(i);
+				}
+			}
+		};
+		
+		
 		ActionListener actListenerBack = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				TelaDisciplinas.main(null);
@@ -172,5 +216,59 @@ public class TelaManterDisciplina extends JFrame {
 		};
 		
 		btnVoltar.addActionListener(actListenerBack);
-	}
+		
+		if(isEditMode) {
+			ActionListener actEnviar = new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					String curso = "";
+					try {
+						for(int j=0; j<listaCurs.size(); j++) {
+							Cursos curs = listaCurs.get(j);
+							if (cursoDisciplina.getSelectedItem().toString().equals(curs.getNome())){
+								curso = Integer.toString(curs.getCodigo());
+							}
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					Disciplinas disc = new Disciplinas(nomeDisciplina.getText(),codDisciplina.getText(), diaSemana.getSelectedItem().toString(),LocalTime.parse(horarioDisciplina.getText()), Integer.parseInt(qtdHrsSemanais.getText()), curso);
+					try {
+						CSVController.updateDisciplina(disc, pos);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					TelaDisciplinas.main(null);
+					dispose();	
+				}
+			};
+			btnNewButton.addActionListener(actEnviar);
+		}else {
+			ActionListener actEnviar = new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					String curso = "";
+						try {
+							for(int j=0; j<listaCurs.size(); j++) {
+								Cursos curs = listaCurs.get(j);
+								if (cursoDisciplina.getSelectedItem().toString().equals(curs.getNome())){
+									curso = Integer.toString(curs.getCodigo());
+								}
+							}
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					Disciplinas disc = new Disciplinas(nomeDisciplina.getText(),codDisciplina.getText(), diaSemana.getSelectedItem().toString(),LocalTime.parse(horarioDisciplina.getText()), Integer.parseInt(qtdHrsSemanais.getText()), curso);
+					CSVController.addDisciplina(disc);
+					TelaDisciplinas.main(null);
+					dispose();	
+			
+					}
+			};
+			btnNewButton.addActionListener(actEnviar);
+		}
+		
 }
+}
+
