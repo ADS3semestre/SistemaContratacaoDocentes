@@ -34,7 +34,7 @@ public class TelaDisciplinas extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaLib<Disciplinas> listaDisc = CSVController.getDisciplinas();
+					ListaLib<Disciplinas> listaDisc = CSVDisciplinas.getDisciplinas();
 					TelaDisciplinas frame = new TelaDisciplinas(listaDisc);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -124,7 +124,7 @@ public class TelaDisciplinas extends JFrame {
 			ActionListener actListenerApaga = new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					try {
-						CSVController.removeDisciplina(val);
+						CSVDisciplinas.removeDisciplina(val);
 						main(null);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block

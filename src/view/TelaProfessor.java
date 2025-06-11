@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import com.destny.model.ListaLib;
 
 import control.CSVController;
+import control.CSVProfessor;
 import model.Cursos;
 import model.Professor;
 
@@ -39,7 +40,7 @@ public class TelaProfessor extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaLib<Professor> listaProf = CSVController.getProfessor();
+					ListaLib<Professor> listaProf = CSVProfessor.getProfessor();
 					TelaProfessor frame = new TelaProfessor(listaProf);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -79,35 +80,38 @@ public class TelaProfessor extends JFrame {
 		JPanel panelContainer = new JPanel();
 		panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
 		
+		int tam = listaProf.size();
+		
 		for(int i=0; i<listaProf.size(); i++) {
 					
-					int posItn = 6;
-					Professor prof = listaProf.get(i);
+				int posItn = 6;
+				Professor prof = listaProf.get(i);
 		
-					JPanel panel = new JPanel();
-					panel.setBackground(new Color(255, 255, 255));
-					panel.setBounds(6, pos, 538, 73);
-					contentPane.add(panel);
-					panel.setLayout(null);
+				JPanel panel = new JPanel();
+				panel.setBackground(new Color(255, 255, 255));
+				panel.setBounds(6, pos, 538, 73);
+				contentPane.add(panel);
+				panel.setLayout(null);
 					
-					JButton btnEdit = new JButton("");
+					JButton btnEdit = new JButton("Editar");
 					btnEdit.setIcon(new ImageIcon("./img/edit.png"));
-					btnEdit.setBounds(344, 16, 90, 36);
+					btnEdit.setBounds(325, 16, 90, 36);
 					panel.add(btnEdit);
 					
-					JButton btnDelete = new JButton("");
+					JButton btnDelete = new JButton("Apagar");
 					btnDelete.setIcon(new ImageIcon("./img/delete.png"));
-					btnDelete.setBounds(439, 16, 90, 36);
+					btnDelete.setBounds(415, 16, 90, 36);
 					panel.add(btnDelete);
 					
 					//----------------------------------------------------------
 					
-					JLabel txtNome = new JLabel("Nome: " + prof.getNome());
+					JLabel txtNome = new JLabel("<html><div style='width:250px;'>Nome: " + prof.getNome()+"</html>");
 					txtNome.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
-					txtNome.setBounds(6, posItn, 350, 16);
+					txtNome.setSize(300, Short.MAX_VALUE);
+					txtNome.setBounds(6, posItn, 350, txtNome.getPreferredSize().height);
 					panel.add(txtNome);
 					
-					posItn += 16;
+					posItn += txtNome.getPreferredSize().height;
 					
 					JLabel txtCPF = new JLabel("CPF: "+prof.getCPF());
 					txtCPF.setBounds(6, posItn, 272, 16);
@@ -139,7 +143,8 @@ public class TelaProfessor extends JFrame {
 					btnEdit.addActionListener(actListenerAdd);
 					
 					panelContainer.add(panel);
-					panelContainer.add(Box.createVerticalStrut(10));
+					panelContainer.add(Box.createVerticalStrut(8));
+					panelContainer.setPreferredSize(new java.awt.Dimension(520,250+txtNome.getPreferredSize().height));
 		}
 
 		JScrollPane scrollPane = new JScrollPane(panelContainer);

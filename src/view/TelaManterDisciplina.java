@@ -8,7 +8,8 @@ import javax.swing.border.EmptyBorder;
 
 import com.destny.model.ListaLib;
 
-import control.CSVController;
+import control.CSVCursos;
+import control.CSVDisciplinas;
 import model.Cursos;
 import model.Disciplinas;
 
@@ -158,7 +159,7 @@ public class TelaManterDisciplina extends JFrame {
 		contentPane.add(txtpnSelecioneOCurso);
 		
 		cursoDisciplina = new JComboBox();
-		ListaLib<Cursos> listaCurs = CSVController.getCursos();
+		ListaLib<Cursos> listaCurs = CSVCursos.getCursos();
 		String[] cursos = new String[listaCurs.size()];
 		for(int i=0; i<listaCurs.size(); i++) {
 			Cursos curs = listaCurs.get(i);
@@ -234,7 +235,7 @@ public class TelaManterDisciplina extends JFrame {
 					}
 					Disciplinas disc = new Disciplinas(nomeDisciplina.getText(),codDisciplina.getText(), diaSemana.getSelectedItem().toString(),LocalTime.parse(horarioDisciplina.getText()), Integer.parseInt(qtdHrsSemanais.getText()), curso);
 					try {
-						CSVController.updateDisciplina(disc, pos);
+						CSVDisciplinas.updateDisciplina(disc, pos);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -260,7 +261,7 @@ public class TelaManterDisciplina extends JFrame {
 							e.printStackTrace();
 						}
 					Disciplinas disc = new Disciplinas(nomeDisciplina.getText(),codDisciplina.getText(), diaSemana.getSelectedItem().toString(),LocalTime.parse(horarioDisciplina.getText()), Integer.parseInt(qtdHrsSemanais.getText()), curso);
-					CSVController.addDisciplina(disc);
+					CSVDisciplinas.addDisciplina(disc);
 					TelaDisciplinas.main(null);
 					dispose();	
 			
