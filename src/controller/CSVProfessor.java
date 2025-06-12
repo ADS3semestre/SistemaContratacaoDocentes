@@ -111,9 +111,32 @@ public class CSVProfessor {
         } finally {
             updateAllProfessor(professor);
         }
+    }
+    public static void quickSort(ListaLib<Professor> professores, int inicio, int fim){
+        if(inicio < fim){
+            int pIndex = dividir(professores, inicio, fim);
+            quickSort(professores, inicio, pIndex -1);
+            quickSort(professores, pIndex + 1, fim);
+        }
+    }
+    private static int dividir(ListaLib<Professor> prof, int inicio, int fim){
+        Professor pivot = professor.getQuantidadePontos();
+        int i = inicio -1;
 
-   
-  
+        for (int j = inicio; j < fim; j++){
+            if(prof.get(j).getQuantidadePontos() <= pivot.getQuantidadePontos()){
+                i++;
+                troca(prof, i+1, fim);
+            }
+        }
+        troca(prof, i + 1, fim);
+        return i + 1;
+    }
+
+    private static void troca(ListaLib<Professor> professores, int i, int j){
+        Professor aux = professores.get(i);
+        professores.set(i, professores.get(j));
+        professores.set(j, aux);
 
     }
 }
