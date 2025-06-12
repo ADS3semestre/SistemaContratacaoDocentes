@@ -102,7 +102,7 @@ public class CSVProfessor {
      // Remove Professor - Delete
     public static void removeProfessor(int i) throws Exception{
         ListaLib<Professor> professor = new ListaLib<>();
-        professor = getProfessor();
+        professor = getListaProf();
         try{
             professor.remove(i);
         }catch(Exception e){
@@ -116,7 +116,7 @@ public class CSVProfessor {
       //Update Professor - Update
     public static void updateProfessor(Professor prof, int i) throws Exception{
         ListaLib<Professor> professor = new ListaLib<>();
-        professor = getProfessor();
+        professor = getListaProf();
         try{
             professor.remove(i);
             professor.add(prof, i);

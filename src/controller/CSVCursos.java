@@ -104,7 +104,7 @@ public class CSVCursos {
     
     public static void removeCursos(int i) throws Exception {
     	ListaLib<Cursos> cursos = new ListaLib<>();
-    	cursos = getCursos();
+    	cursos = getListaCursos();
     	try {
     		cursos.remove(i);
     	} catch (Exception e) {
@@ -118,7 +118,7 @@ public class CSVCursos {
     
     public static void updateCursos(Cursos curso, int i) throws Exception {
     	ListaLib<Cursos> cursos = new ListaLib<>();
-    	cursos = getCursos();
+    	cursos = getListaCursos();
     	try {
     		cursos.remove(i);
     		cursos.add(curso, i);

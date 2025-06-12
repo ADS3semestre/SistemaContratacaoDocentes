@@ -12,7 +12,6 @@ import com.destny.model.ListaLib;
 
 
 import model.Disciplinas;
-import model.Inscricao;
 
 public class CSVDisciplinas{
     // Get Disciplinas - Read
