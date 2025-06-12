@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import com.destny.fila.Fila;
 import com.destny.model.ListaLib;
 
 import model.Cursos;
@@ -14,8 +15,8 @@ public class CSVCursos {
 
     // Cursos --- Read
     
-    public static ListaLib<Cursos> getCursos() {
-        ListaLib<Cursos> cursos = new ListaLib<>();
+    public static Fila<Cursos> getCursos() {
+        Fila<Cursos> cursos = new Fila<>();
         BufferedReader reader = null;
         String line = "";
         String fileName = CSVController.getFileName("cursos.csv");
@@ -27,7 +28,7 @@ public class CSVCursos {
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
                 Cursos curso = new Cursos(row[0], row[1], Integer.parseInt(row[2]));
-                cursos.addLast(curso);
+                cursos.Insert(curso);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,6 +42,17 @@ public class CSVCursos {
         return cursos;
     }
 
+    public static ListaLib<Cursos>getListaCursos() throws Exception {
+    	Fila<Cursos> cur = getCursos();
+    	ListaLib<Cursos> cursos = new ListaLib<>();
+    	int t = cur.Size();
+    	for (int i = 0; i < t; i++) {
+    		cursos.addLast(cur.Remove());
+    	}
+    	return cursos;
+    }
+    
+    
     // Cursos -- Create
     
     public static void addCurso(Cursos curso) {

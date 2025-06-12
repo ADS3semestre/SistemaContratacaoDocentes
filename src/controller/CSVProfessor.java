@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import com.destny.fila.Fila;
 import com.destny.model.ListaLib;
 
 import model.Professor;
@@ -13,20 +14,20 @@ import model.Professor;
 public class CSVProfessor {
     
     // Get Professor -- Read
-    public static ListaLib<Professor> getProfessor() {
-        ListaLib<Professor> professores = new ListaLib<>();
+    public static Fila<Professor> getProfessor() {
+        Fila<Professor> professores = new Fila<>();
         BufferedReader reader = null;
         String line = "";
         String fileName = CSVController.getFileName("professor.csv");
 
-
+        
         try {
             reader = new BufferedReader(new FileReader(fileName));
             reader.readLine(); // Pula o cabeçalho do arquivo
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
                 Professor prof = new Professor(row[0], row[1], Double.parseDouble(row[2]),row[3]);
-                professores.addLast(prof);
+                professores.Insert(prof);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,6 +40,18 @@ public class CSVProfessor {
         }
         return professores;
     }
+    
+    public static ListaLib<Professor>getListaProf() throws Exception {
+    	Fila<Professor> pro = getProfessor();
+    	ListaLib<Professor> professores = new ListaLib<>();
+    	int t = pro.Size();
+    	for (int i = 0; i < t; i++) {
+    		professores.addLast(pro.Remove());
+    	}
+    	return professores;
+    }
+    
+    
     // Add Professor -- Create
 
     public static void addProfessor(Professor professor) {

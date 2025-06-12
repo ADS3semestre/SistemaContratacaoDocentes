@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import com.destny.fila.Fila;
 import com.destny.model.ListaLib;
 
 import model.Inscricao;
@@ -14,8 +15,8 @@ public class CSVIncricao {
 
     // Get Inscrição -- Read
     
-    public static ListaLib<Inscricao> getInscricao() {
-        ListaLib<Inscricao> inscricao = new ListaLib<>();
+    public static Fila<Inscricao> getInscricao() {
+        Fila<Inscricao> inscricao = new Fila<>();
         BufferedReader reader = null;
         String line = "";
         String fileName = CSVController.getFileName("inscricao.csv");
@@ -26,7 +27,7 @@ public class CSVIncricao {
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
                 Inscricao insc = new Inscricao(row[0], row[1], row[2]);
-                inscricao.addLast(insc);
+                inscricao.Insert(insc);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,6 +40,18 @@ public class CSVIncricao {
         }
         return inscricao;
     }
+    
+    public static ListaLib<Inscricao>getListaInsc() throws Exception {
+    	Fila <Inscricao> inscric = getInscricao();
+    	ListaLib<Inscricao> inscricao = new ListaLib<>();
+    	int t = inscric.Size();
+    	for (int i = 0; i < t; i++) {
+    		inscricao.addLast(inscric.Remove());
+    	}
+    	return inscricao;
+    }
+    
+    
     // Get Inscrição -- Create
 
     public static void addInscricao(Inscricao insc) {
