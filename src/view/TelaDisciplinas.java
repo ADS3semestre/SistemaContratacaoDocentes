@@ -1,7 +1,11 @@
 package view;
 
 import java.awt.EventQueue;
+
+import com.destny.fila.Fila;
 import com.destny.model.ListaLib;
+
+import controller.*;
 import view.TelaManterDisciplina;
 import model.*;
 import javax.swing.JFrame;
@@ -15,7 +19,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import control.*;
+
 import javax.swing.JList;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -34,8 +38,8 @@ public class TelaDisciplinas extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaLib<Disciplinas> listaDisc = CSVDisciplinas.getDisciplinas();
-					TelaDisciplinas frame = new TelaDisciplinas(listaDisc);
+					Fila<Disciplinas> filaDisc = CSVDisciplinas.getDisciplinas();
+					TelaDisciplinas frame = new TelaDisciplinas(filaDisc);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -47,7 +51,7 @@ public class TelaDisciplinas extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaDisciplinas(ListaLib<Disciplinas> listaDisc) throws Exception {
+	public TelaDisciplinas(Fila<Disciplinas> filaDisc) throws Exception {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 349);
 		contentPane = new JPanel();
@@ -62,7 +66,7 @@ public class TelaDisciplinas extends JFrame {
 		contentPane.add(btnAdd);
 		
 		int pos = 94;
-		int tam = listaDisc.size();
+		int tam = filaDisc.Size();
 		// Painel que irá conter os painéis das disciplinas
 		
 		JPanel panelContainer = new JPanel();
@@ -70,7 +74,7 @@ public class TelaDisciplinas extends JFrame {
 
 
 		for (int i = 0; i < tam; i++) {
-			Disciplinas disc = listaDisc.get(i);
+			Disciplinas disc = filaDisc.Remove();
 
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(255, 255, 255));

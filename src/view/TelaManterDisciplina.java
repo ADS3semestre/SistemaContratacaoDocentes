@@ -8,8 +8,8 @@ import javax.swing.border.EmptyBorder;
 
 import com.destny.model.ListaLib;
 
-import control.CSVCursos;
-import control.CSVDisciplinas;
+import controller.CSVCursos;
+import controller.CSVDisciplinas;
 import model.Cursos;
 import model.Disciplinas;
 
