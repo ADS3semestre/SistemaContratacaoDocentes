@@ -25,7 +25,7 @@ public class CSVProfessor {
             reader.readLine(); // Pula o cabeçalho do arquivo
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
-                Professor prof = new Professor(row[0], row[1], Double.parseDouble(row[2]));
+                Professor prof = new Professor(row[0], row[1], Double.parseDouble(row[2]),row[3]);
                 professores.addLast(prof);
             }
         } catch (Exception e) {
@@ -62,7 +62,7 @@ public class CSVProfessor {
        //Update All Professores
     private static void updateAllProfessor(ListaLib<Professor> professor) throws Exception{
         String fileName = CSVController.getFileName("professor.csv");
-        String cabecalho = "Professor, CPF, Nome, Quantidade de Pontos";
+        String cabecalho = "Professor, CPF, Nome, Quantidade de Pontos, Área";
         int i = professor.size();
 
         try(PrintWriter writer = new PrintWriter(new FileWriter(fileName))){
@@ -73,8 +73,9 @@ public class CSVProfessor {
                 String cPF = prof.getCPF();
                 String nome = prof.getNome();
                 String qtdPontos = Double.toString(prof.getQuantidadePontos());
+                String area =  prof.getArea();
 
-                 String line = ("\n" + cPF + "," + nome + "," + qtdPontos);
+                 String line = ("\n" + cPF + "," + nome + "," + qtdPontos + ","+area);
                  writer.append(line);
             }
             writer.flush();
@@ -112,31 +113,45 @@ public class CSVProfessor {
             updateAllProfessor(professor);
         }
     }
-    public static void quickSort(ListaLib<Professor> professores, int inicio, int fim){
-        if(inicio < fim){
+
+//Ordenar por Qtd de Pontos
+    public static ListaLib<Professor> quickSort(ListaLib<Professor> professores, int inicio, int fim) throws Exception{
+        if(fim > inicio){
             int pIndex = dividir(professores, inicio, fim);
             quickSort(professores, inicio, pIndex -1);
             quickSort(professores, pIndex + 1, fim);
         }
+        return professores;
     }
-    private static int dividir(ListaLib<Professor> prof, int inicio, int fim){
-        Professor pivot = professor.getQuantidadePontos();
-        int i = inicio -1;
 
-        for (int j = inicio; j < fim; j++){
-            if(prof.get(j).getQuantidadePontos() <= pivot.getQuantidadePontos()){
-                i++;
-                troca(prof, i+1, fim);
+    private static int dividir(ListaLib<Professor> professores, int inicio, int fim) throws Exception{
+        Professor profPivot = professores.get(inicio);
+        double pivot = profPivot.getQuantidadePontos();
+        int pEsq = inicio + 1;
+        int pDir = fim;
+
+        while(pEsq <= pDir){
+            while (pEsq <= pDir && professores.get(pEsq).getQuantidadePontos() <= pivot) {
+                pEsq++;
+            }
+            while (pDir >= pEsq && professores.get(pDir).getQuantidadePontos() > pivot){
+                pDir--;
+            }
+            if (pEsq < pDir){
+                trocar(professores, pEsq, pDir);
+                pEsq++;
+                pDir--;
             }
         }
-        troca(prof, i + 1, fim);
-        return i + 1;
+        trocar(professores, inicio, pDir);
+        return pDir;
     }
 
-    private static void troca(ListaLib<Professor> professores, int i, int j){
-        Professor aux = professores.get(i);
-        professores.set(i, professores.get(j));
-        professores.set(j, aux);
-
+    private static void trocar(ListaLib<Professor> professores, int i, int j) throws Exception{
+    Professor profI = professores.get(i);
+    professores.add(professores.get(j), i);
+    professores.remove(i+1);
+    professores.add(profI, j);
+    professores.remove(j+1);
     }
 }

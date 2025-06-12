@@ -2,6 +2,9 @@ package view;
 
 import java.awt.Cursor;
 import java.time.LocalTime;
+
+import com.destny.model.ListaLib;
+
 import controller.*;
 import model.Disciplinas;
 import model.Cursos;
@@ -31,5 +34,15 @@ public class main {
 
         /* Professor professor = new Professor("4444444444", "Leandro", 344.3);
         CSVController.addProfessor(professor); */
+        ListaLib<Professor> professores = CSVProfessor.getProfessor();
+        int t = professores.size();
+        for(int i = 0; i < t; i++){
+            System.out.println(professores.get(i).getQuantidadePontos());
+        }
+        System.out.println("-----------------------------------");
+        professores = CSVProfessor.quickSort(professores, 0, t-1);
+        for(int i = 0; i < t; i++){
+            System.out.println(professores.get(i).getQuantidadePontos());
+        }
     }
 }

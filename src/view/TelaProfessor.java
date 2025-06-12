@@ -9,8 +9,8 @@ import javax.swing.border.EmptyBorder;
 
 import com.destny.model.ListaLib;
 
-import control.CSVController;
-import control.CSVProfessor;
+import controller.CSVController;
+import controller.CSVProfessor;
 import model.Cursos;
 import model.Professor;
 
