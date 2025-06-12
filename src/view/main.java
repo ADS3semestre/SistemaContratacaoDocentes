@@ -34,7 +34,8 @@ public class main {
 
         /* Professor professor = new Professor("4444444444", "Leandro", 344.3);
         CSVController.addProfessor(professor); */
-        ListaLib<Professor> professores = CSVProfessor.getProfessor();
+        // testando quicksort
+        /*ListaLib<Professor> professores = CSVProfessor.getProfessor();
         int t = professores.size();
         for(int i = 0; i < t; i++){
             System.out.println(professores.get(i).getQuantidadePontos());
@@ -43,6 +44,6 @@ public class main {
         professores = CSVProfessor.quickSort(professores, 0, t-1);
         for(int i = 0; i < t; i++){
             System.out.println(professores.get(i).getQuantidadePontos());
-        }
+        }*/
     }
 }

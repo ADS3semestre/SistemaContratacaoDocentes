@@ -12,10 +12,11 @@ import com.destny.model.ListaLib;
 
 
 import model.Disciplinas;
+import model.Inscricao;
 
 public class CSVDisciplinas{
     // Get Disciplinas - Read
-    public static Fila<Disciplinas> getDisciplinas() {
+    public static Fila<Disciplinas> getDisciplinas() { 
         Fila<Disciplinas> disciplinas = new Fila<>();
         BufferedReader reader = null;
         String line = "";
@@ -40,7 +41,7 @@ public class CSVDisciplinas{
         }
         return disciplinas;
     }
-    public static ListaLib<Disciplinas>getLista() throws Exception {
+    public static ListaLib<Disciplinas>getLista() throws Exception { 
         Fila<Disciplinas> discs = getDisciplinas();
         ListaLib<Disciplinas> disciplinas = new ListaLib<>(); 
         int t = discs.Size();
@@ -109,8 +110,24 @@ public class CSVDisciplinas{
     public static void removeDisciplina(int i) throws Exception {
         ListaLib<Disciplinas> disciplinas = new ListaLib<>();
         disciplinas = getLista();
+        String codDisc = disciplinas.get(i).getCodigoDisciplina();
+
+        BufferedReader reader = null;
+        String line = "";
+        String fileName = CSVController.getFileName("inscricao.csv");
+        int count = 0;
+
         try {
             disciplinas.remove(i);
+            reader = new BufferedReader(new FileReader(fileName));
+            reader.readLine();
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+                if(row[2].contains(codDisc)){
+                    CSVIncricao.removeInscricao(count);
+                }
+                count++;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
