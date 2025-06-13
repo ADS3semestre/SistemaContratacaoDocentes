@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.destny.fila.Fila;
 import com.destny.model.ListaLib;
 
 import controller.CSVCursos;
@@ -159,10 +160,10 @@ public class TelaManterDisciplina extends JFrame {
 		contentPane.add(txtpnSelecioneOCurso);
 		
 		cursoDisciplina = new JComboBox();
-		ListaLib<Cursos> listaCurs = CSVCursos.getCursos();
-		String[] cursos = new String[listaCurs.size()];
-		for(int i=0; i<listaCurs.size(); i++) {
-			Cursos curs = listaCurs.get(i);
+		Fila<Cursos> filaCurs = CSVCursos.getCursos();
+		String[] cursos = new String[filaCurs.Size()];
+		for(int i=0; i<filaCurs.Size(); i++) {
+			Cursos curs = filaCurs.Remove();
 			cursos[i] = curs.getNome();
 		};
 		
@@ -195,8 +196,8 @@ public class TelaManterDisciplina extends JFrame {
 			horarioDisciplina.setText(disciplina.getHoraInicio().toString());
 			qtdHrsSemanais.setText(Integer.toString(disciplina.getHorasDiarias()));
 			String nomeCurso = "";
-			for (int j=0; j<listaCurs.size(); j++) {
-				Cursos curs = listaCurs.get(j);
+			for (int j=0; j<filaCurs.Size(); j++) {
+				Cursos curs = filaCurs.Remove();
 				if(disciplina.getCodCurso().equals(curs.getCodigo())) {
 					nomeCurso = curs.getNome();
 				}
@@ -223,8 +224,8 @@ public class TelaManterDisciplina extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					String curso = "";
 					try {
-						for(int j=0; j<listaCurs.size(); j++) {
-							Cursos curs = listaCurs.get(j);
+						for(int j=0; j<filaCurs.Size(); j++) {
+							Cursos curs = filaCurs.Remove();
 							if (cursoDisciplina.getSelectedItem().toString().equals(curs.getNome())){
 								curso = Integer.toString(curs.getCodigo());
 							}
@@ -250,8 +251,8 @@ public class TelaManterDisciplina extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					String curso = "";
 						try {
-							for(int j=0; j<listaCurs.size(); j++) {
-								Cursos curs = listaCurs.get(j);
+							for(int j=0; j<filaCurs.Size(); j++) {
+								Cursos curs = filaCurs.Remove();
 								if (cursoDisciplina.getSelectedItem().toString().equals(curs.getNome())){
 									curso = Integer.toString(curs.getCodigo());
 								}

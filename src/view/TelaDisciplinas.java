@@ -65,6 +65,16 @@ public class TelaDisciplinas extends JFrame {
 		btnAdd.setBounds(6, 46, 538, 36);
 		contentPane.add(btnAdd);
 		
+		ActionListener actListenerAdd = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Disciplinas disciplina = new Disciplinas("","","",null,0,"");
+				TelaManterDisciplina.main(false,disciplina, 0);
+				dispose();
+			}
+		};
+		
+		btnAdd.addActionListener(actListenerAdd);
+		
 		int pos = 94;
 		int tam = filaDisc.Size();
 		// Painel que irá conter os painéis das disciplinas
@@ -99,14 +109,6 @@ public class TelaDisciplinas extends JFrame {
 			btnApaga.setBounds(395, 78, 110, 36);
 			panel.add(btnApaga);
 			
-			ActionListener actListenerAdd = new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					Disciplinas disciplina = new Disciplinas("","","",null,0,"");
-					TelaManterDisciplina.main(false,disciplina, 0);
-					dispose();
-				}
-			};
-			
 			final int posA = i;
 			
 			ActionListener actListenerEdit = new ActionListener() {
@@ -139,7 +141,6 @@ public class TelaDisciplinas extends JFrame {
 			};
 			
 			btnApaga.addActionListener(actListenerApaga);
-			btnAdd.addActionListener(actListenerAdd);
 			btnEdicao.addActionListener(actListenerEdit);
 			btnInsc.addActionListener(actListenerInsc);
 			

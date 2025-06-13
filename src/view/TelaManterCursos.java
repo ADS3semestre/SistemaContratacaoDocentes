@@ -5,7 +5,11 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextPane;
+
+import controller.CSVCursos;
+import model.Cursos;
+
+import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,20 +27,20 @@ public class TelaManterCursos extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField nomeCurso;
-	private JTextPane txtpnDigiteO;
+	private JLabel txtpnDigiteO;
 	private JTextField codCurso;
-	private JTextPane txtpnDigiteODia;
-	private JButton btnNewButton;
+	private JLabel txtpnDigiteODia;
+	private JButton btnEnviar;
 	private JTextField areaCurso;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(Boolean isEditMode) {
+	public static void main(Boolean isEditMode, Cursos curso, int i) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaManterCursos frame = new TelaManterCursos(isEditMode);
+					TelaManterCursos frame = new TelaManterCursos(isEditMode, curso, i);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -48,7 +52,7 @@ public class TelaManterCursos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaManterCursos(Boolean isEditMode) {
+	public TelaManterCursos(Boolean isEditMode, Cursos curso, int i) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 291);
 		contentPane = new JPanel();
@@ -57,7 +61,7 @@ public class TelaManterCursos extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JTextPane txtpnAdicionarDisciplina = new JTextPane();
+		JLabel txtpnAdicionarDisciplina = new JLabel();
 		txtpnAdicionarDisciplina.setBackground(new Color(237, 238, 238));
 		if(isEditMode){
 			txtpnAdicionarDisciplina.setText("Editar Cursos");
@@ -69,8 +73,7 @@ public class TelaManterCursos extends JFrame {
 		txtpnAdicionarDisciplina.setBounds(218, 6, 181, 31);
 		contentPane.add(txtpnAdicionarDisciplina);
 		
-		JTextPane txtNomeCurso = new JTextPane();
-		txtNomeCurso.setEditable(false);
+		JLabel txtNomeCurso = new JLabel();
 		txtNomeCurso.setText("Nome do curso");
 		txtNomeCurso.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtNomeCurso.setBackground(new Color(238, 238, 238));
@@ -82,8 +85,7 @@ public class TelaManterCursos extends JFrame {
 		contentPane.add(nomeCurso);
 		nomeCurso.setColumns(10);
 		
-		txtpnDigiteO = new JTextPane();
-		txtpnDigiteO.setEditable(false);
+		txtpnDigiteO = new JLabel();
 		txtpnDigiteO.setText("Código do curso");
 		txtpnDigiteO.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtpnDigiteO.setBackground(UIManager.getColor("Button.background"));
@@ -95,23 +97,52 @@ public class TelaManterCursos extends JFrame {
 		codCurso.setBounds(157, 100, 421, 37);
 		contentPane.add(codCurso);
 		
-		txtpnDigiteODia = new JTextPane();
-		txtpnDigiteODia.setEditable(false);
+		txtpnDigiteODia = new JLabel();
 		txtpnDigiteODia.setText("Área do curso");
 		txtpnDigiteODia.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtpnDigiteODia.setBackground(UIManager.getColor("Button.background"));
 		txtpnDigiteODia.setBounds(20, 153, 132, 37);
 		contentPane.add(txtpnDigiteODia);
 		
-		btnNewButton = new JButton("Enviar");
-		btnNewButton.setBackground(new Color(255, 255, 255));
-		btnNewButton.setBounds(461, 207, 117, 29);
-		contentPane.add(btnNewButton);
+		btnEnviar = new JButton("Enviar");
+		btnEnviar.setBackground(new Color(255, 255, 255));
+		btnEnviar.setBounds(461, 207, 117, 29);
+		contentPane.add(btnEnviar);
 		
 		areaCurso = new JTextField();
 		areaCurso.setColumns(10);
 		areaCurso.setBounds(157, 153, 421, 37);
 		contentPane.add(areaCurso);
+		
+		//se for modo de edição, ele preenche os campos
+		if(isEditMode){
+			nomeCurso.setText(curso.getNome());
+			areaCurso.setText(curso.getArea());
+			codCurso.setText(Integer.toString(curso.getCodigo()));
+		}
+		
+		
+		//envia aqui abaixo
+		ActionListener actEnviar = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Cursos cursoTmp = new Cursos(nomeCurso.getText(),areaCurso.getText(),Integer.parseInt(codCurso.getText()));
+				if(isEditMode) {
+					try {
+						CSVCursos.updateCursos(curso, i);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+				}else {
+					CSVCursos.addCurso(cursoTmp);
+				}
+				TelaCursos.main(null);
+				dispose();
+			}
+		};
+		
+		btnEnviar.addActionListener(actEnviar);
+		
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.setIcon(new ImageIcon("./img/voltar.png"));

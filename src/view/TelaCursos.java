@@ -7,10 +7,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import com.destny.fila.Fila;
 import com.destny.model.ListaLib;
 
-import control.CSVController;
-import control.CSVCursos;
+import controller.CSVController;
+import controller.CSVCursos;
 import model.Cursos;
 import model.Disciplinas;
 
@@ -40,8 +41,8 @@ public class TelaCursos extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaLib<Cursos> listaCurs = CSVCursos.getCursos();
-					TelaCursos frame = new TelaCursos(listaCurs);
+					Fila<Cursos> filaCurs = CSVCursos.getCursos();
+					TelaCursos frame = new TelaCursos(filaCurs);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,7 +54,7 @@ public class TelaCursos extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaCursos(ListaLib<Cursos> listaCurs) throws Exception{
+	public TelaCursos(Fila<Cursos> filaCurs) throws Exception{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 349);
 		contentPane = new JPanel();
@@ -67,15 +68,25 @@ public class TelaCursos extends JFrame {
 		btnAdd.setBounds(6, 46, 538, 36);
 		contentPane.add(btnAdd);
 		
+		ActionListener actListenerAdd = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Cursos emptyCurs = new Cursos("","",0);
+				TelaManterCursos.main(false,emptyCurs, 0);
+				dispose();
+			}
+		};
+		
+		btnAdd.addActionListener(actListenerAdd);
+		
 		int pos = 94;
 		
 		JPanel panelContainer = new JPanel();
 		panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
 		
-		int tam = listaCurs.size();
+		int tam = filaCurs.Size();
 		for(int i=0; i<tam; i++) {
 			
-			Cursos curs = listaCurs.get(i);
+			Cursos curs = filaCurs.Remove();
 		
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(255, 255, 255));
@@ -116,22 +127,32 @@ public class TelaCursos extends JFrame {
 				
 				pos += 90;
 				
-				ActionListener actListenerAdd = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						TelaManterCursos.main(false);
-						dispose();
-					}
-				};
+				final int aux = i;
 				
 				ActionListener actListenerEdit = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						TelaManterCursos.main(true);
+						TelaManterCursos.main(true,curs, aux);
 						dispose();
 					}
 				};
 				
-				btnAdd.addActionListener(actListenerAdd);
 				btnEditar.addActionListener(actListenerEdit);
+				
+				
+				ActionListener actListenerApaga = new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						try {
+							CSVCursos.removeCursos(aux);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						main(null);
+						dispose();
+					}
+				};
+				
+				btnApagar.addActionListener(actListenerApaga);
 				
 				panelContainer.add(panel);
 				panelContainer.add(Box.createVerticalStrut(20));

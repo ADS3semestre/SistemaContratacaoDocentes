@@ -8,12 +8,13 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.destny.model.ListaLib;
+
+import controller.CSVController;
+import controller.CSVDisciplinas;
+import controller.CSVIncricao;
+import controller.CSVProfessor;
 import model.Inscricao;
 import model.Professor;
-import control.CSVController;
-import control.CSVDisciplinas;
-import control.CSVIncricao;
-import control.CSVProfessor;
 import model.Disciplinas;
 
 import javax.swing.JButton;
