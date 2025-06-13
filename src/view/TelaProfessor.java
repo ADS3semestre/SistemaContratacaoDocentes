@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
+import com.destny.fila.Fila;
 import com.destny.model.ListaLib;
 
 import controller.CSVController;
@@ -16,7 +17,7 @@ import model.Professor;
 
 import javax.swing.JButton;
 import java.awt.Color;
-import javax.swing.JTextPane;
+import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -40,8 +41,8 @@ public class TelaProfessor extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaLib<Professor> listaProf = CSVProfessor.getProfessor();
-					TelaProfessor frame = new TelaProfessor(listaProf);
+					Fila<Professor> filaProf = CSVProfessor.getProfessor();
+					TelaProfessor frame = new TelaProfessor(filaProf);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,7 +54,7 @@ public class TelaProfessor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaProfessor(ListaLib<Professor> listaProf) throws Exception {
+	public TelaProfessor(Fila<Professor> filaProf) throws Exception {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 349);
 		contentPane = new JPanel();
@@ -67,8 +68,17 @@ public class TelaProfessor extends JFrame {
 		btnAdd.setBounds(6, 46, 538, 36);
 		contentPane.add(btnAdd);
 		
-		JTextPane txtProf = new JTextPane();
-		txtProf.setEditable(false);
+		ActionListener actListenerAdd = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Professor profNull = new Professor("","",0.0,"");
+				TelaManterProfessor.main(false, profNull, 0);
+				dispose();
+			}
+		};
+		
+		btnAdd.addActionListener(actListenerAdd);
+		
+		JLabel txtProf = new JLabel();
 		txtProf.setBackground(new Color(238, 238, 238));
 		txtProf.setFont(new Font("Arial", Font.PLAIN, 24));
 		txtProf.setText("Professores");
@@ -80,12 +90,12 @@ public class TelaProfessor extends JFrame {
 		JPanel panelContainer = new JPanel();
 		panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
 		
-		int tam = listaProf.size();
+		int tam = filaProf.Size();
 		
-		for(int i=0; i<listaProf.size(); i++) {
+		for(int i=0; i<filaProf.Size(); i++) {
 					
 				int posItn = 6;
-				Professor prof = listaProf.get(i);
+				Professor prof = filaProf.Remove();
 		
 				JPanel panel = new JPanel();
 				panel.setBackground(new Color(255, 255, 255));
@@ -125,22 +135,30 @@ public class TelaProfessor extends JFrame {
 					
 					pos += 80;
 					
-					ActionListener actListenerAdd = new ActionListener() {
-						public void actionPerformed(ActionEvent arg0) {
-							TelaManterProfessor.main(false);
-							dispose();
-						}
-					};
+					final int aux = i;
 					
 					ActionListener actListenerEdit = new ActionListener() {
 						public void actionPerformed(ActionEvent arg0) {
-							TelaManterProfessor.main(true);
+							TelaManterProfessor.main(true, prof, aux);
 							dispose();
 						}
 					};
 					
-					btnAdd.addActionListener(actListenerAdd);
-					btnEdit.addActionListener(actListenerAdd);
+					btnEdit.addActionListener(actListenerEdit);
+					
+					ActionListener actListenerApaga = new ActionListener() {
+						public void actionPerformed(ActionEvent arg0) {
+							try {
+								CSVProfessor.removeProfessor(aux);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							main(null);
+							dispose();
+						}
+					};
+					
+					btnDelete.addActionListener(actListenerApaga);
 					
 					panelContainer.add(panel);
 					panelContainer.add(Box.createVerticalStrut(8));
