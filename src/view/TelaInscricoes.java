@@ -6,12 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import com.destny.model.Fila;
-
 import controller.CSVController;
 import controller.CSVDisciplinas;
-import controller.CSVIncricao;
+import controller.CSVInscricao;
 import controller.CSVProfessor;
 import model.Inscricao;
 import model.Professor;
@@ -47,10 +44,9 @@ public class TelaInscricoes extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Fila<Inscricao> filaInsc = CSVIncricao.getInscricao();
-					Fila<Professor> filaProf = CSVProfessor.getProfessor();
+					Fila<Inscricao> filaInsc = CSVInscricao.getInscricao();
 					Fila<Disciplinas> filaDisc = CSVDisciplinas.getDisciplinas();
-					TelaInscricoes frame = new TelaInscricoes(filaInsc, filaProf, filaDisc);
+					TelaInscricoes frame = new TelaInscricoes(filaInsc, filaDisc);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -62,7 +58,7 @@ public class TelaInscricoes extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaInscricoes(Fila<Inscricao> filaInsc, Fila<Professor> filaProf,Fila<Disciplinas> filaDisc) throws Exception {
+	public TelaInscricoes(Fila<Inscricao> filaInsc,Fila<Disciplinas> filaDisc) throws Exception {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 349);
@@ -84,15 +80,28 @@ public class TelaInscricoes extends JFrame {
 		txtInscricoes.setBounds(227, 6, 108, 28);
 		contentPane.add(txtInscricoes);
 		
+		ActionListener actListenerAdd = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Inscricao emptyInsc = new Inscricao("","","");
+				TelaManterInscricao.main(false, emptyInsc, 0);
+				dispose();
+			}
+		};
+		
+		btnInsc.addActionListener(actListenerAdd);
+		
 		int pos = 137;
 		
 		JPanel panelContainer = new JPanel();
 		panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
 		
-		for(int i=0; i<filaInsc.Size(); i++) {
+		int tam = filaInsc.Size();
+		
+		for(int i=0; i<tam; i++) {
 			
+			Fila<Professor> filaProf = CSVProfessor.getProfessor();
+		
 			Inscricao insc = filaInsc.Remove();
-			int posItn = 6;
 			
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(255, 255, 255));
@@ -101,86 +110,94 @@ public class TelaInscricoes extends JFrame {
 			panel.setLayout(null);
 			
 				JLabel txtNome = new JLabel();
-				txtNome.setBounds(6, posItn, 300, 19);
+				txtNome.setBounds(6, 10, 300, 19);
 				panel.add(txtNome);
 				txtNome.setFont(new Font("Arial", Font.PLAIN, 16));
-				posItn += 19;
+				
+				JLabel txtCodDis = new JLabel();
+				txtCodDis.setText("Código da disciplina: "+insc.getCodigoDisciplina());
+				txtCodDis.setFont(new Font("Arial", Font.PLAIN, 13));
+				txtCodDis.setBounds(6, 29 , 300, 16);
+				panel.add(txtCodDis);
+				
 				
 				JLabel txtCPF = new JLabel();
-				txtCPF.setBounds(6, posItn, 330, 16);
+				txtCPF.setBounds(6, 45, 330, 16);
 				panel.add(txtCPF);
 				txtCPF.setText("CPF: " + insc.getCPF());
 				txtCPF.setFont(new Font("Arial", Font.PLAIN, 13));
-				posItn += 16;
+				
 				
 				JLabel txtCod = new JLabel();
 				txtCod.setText("Código do processo: " + insc.getCodProcesso());
 				txtCod.setFont(new Font("Arial", Font.PLAIN, 13));
-				txtCod.setBounds(6, posItn, 300, 16);
+				txtCod.setBounds(6, 61, 300, 16);
 				panel.add(txtCod);
-				posItn += 16;
 				
 				JLabel txtPont = new JLabel();
 				txtPont.setFont(new Font("Arial", Font.PLAIN, 13));
-				txtPont.setBounds(6, posItn, 330, 16);
+				txtPont.setBounds(6, 78, 330, 16);
 				panel.add(txtPont);
 				
-				for (int j=0; j<filaProf.Size(); j++) {
+				int tam2 = filaProf.Size();
+				
+				for (int j=0; j<tam2; j++) {
 					Professor prof = filaProf.Remove();
-					if(prof.getCPF() == insc.getCPF()) {
+					if(insc.getCPF().equals(prof.getCPF())){
 						txtNome.setText("Nome do professor: " + prof.getNome());
 						txtPont.setText("Quantidade de pontos: "+Double.toString(prof.getQuantidadePontos()));
 					}
 				}
 				
 				
-				JLabel txtCodDis = new JLabel();
-				txtCodDis.setText("Código da disciplina: "+insc.getCodigoDisciplina());
-				txtCodDis.setFont(new Font("Arial", Font.PLAIN, 13));
-				txtCodDis.setBounds(6, posItn, 300, 16);
-				panel.add(txtCodDis);
+				JButton btnEdita = new JButton("Editar");
+				btnEdita.setIcon(new ImageIcon("./img/edit.png"));
+				btnEdita.setBounds(425, 10, 96, 36);
+				panel.add(btnEdita);
 				
-				int posBtn = 24;
-				
-				
-				JButton btnNewButton_1 = new JButton("Editar");
-				btnNewButton_1.setIcon(new ImageIcon("./img/edit.png"));
-				btnNewButton_1.setBounds(437, posBtn, 96, 36);
-				panel.add(btnNewButton_1);
-				posBtn += 40;
-				
-				JButton btnNewButton_1_1 = new JButton("Apagar");
-				btnNewButton_1_1.setIcon(new ImageIcon("./img/delete.png"));
-				btnNewButton_1_1.setBounds(437, posBtn, 96, 36);
-				panel.add(btnNewButton_1_1);
+				JButton btnApaga = new JButton("Apagar");
+				btnApaga.setIcon(new ImageIcon("./img/delete.png"));
+				btnApaga.setBounds(425, 45, 96, 36);
+				panel.add(btnApaga);
 				
 				pos += 145;
 				
-				ActionListener actListenerAdd = new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						TelaManterInscricao.main(false);
-						dispose();
-					}
-				};
+				
+				final int aux = i;
 				
 				ActionListener actListenerEdit = new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
-						TelaManterInscricao.main(true);
+						TelaManterInscricao.main(true, insc, aux);
 						dispose();
 					}
 				};
 				
-				btnInsc.addActionListener(actListenerAdd);
-				btnNewButton_1.addActionListener(actListenerEdit);
+				ActionListener actListenerApaga = new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						try {
+							CSVInscricao.removeInscricao(aux);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						main(null);
+						dispose();
+					}
+				};
+				
+				btnApaga.addActionListener(actListenerApaga);
+				btnEdita.addActionListener(actListenerEdit);
 		
 				panelContainer.add(panel);
 				panelContainer.add(Box.createVerticalStrut(10));
+				panelContainer.setPreferredSize(new java.awt.Dimension(520,((txtNome.getPreferredSize().height+110)*tam)));
 		}
 		
 		// Coloca o painelContainer no JScrollPane
 		JScrollPane scrollPane = new JScrollPane(panelContainer);
-		scrollPane.setBounds(6, 94, 533, 200);
+		scrollPane.setBounds(6, 130, 533, 170);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
+		contentPane.add(scrollPane);
 		
 		String[] vet = new String[filaDisc.Size()];
 		for(int i=0; i<filaDisc.Size(); i++) {

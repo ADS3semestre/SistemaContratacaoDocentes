@@ -145,7 +145,7 @@ public class TelaManterProfessor extends JFrame {
 				Professor profNew = new Professor(cpfProf.getText(),nomeProf.getText(),Double.parseDouble(pontosProf.getText()), areaProf.getText());
 				if(isEditMode) {
 					try {
-						CSVProfessor.updateProfessor(prof, i);
+						CSVProfessor.updateProfessor(profNew, i);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

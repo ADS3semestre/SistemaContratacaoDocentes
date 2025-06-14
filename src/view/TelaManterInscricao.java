@@ -5,7 +5,17 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JTextPane;
+
+import com.destny.fila.Fila;
+
+import controller.CSVDisciplinas;
+import controller.CSVProfessor;
+import controller.CSVInscricao;
+import model.Disciplinas;
+import model.Inscricao;
+import model.Professor;
+
+import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,20 +32,21 @@ public class TelaManterInscricao extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextPane txtpnDigiteO;
+	private JLabel txtpnDigiteO;
 	private JTextField codProcesso;
-	private JTextPane txtpnDigiteODia;
+	private JLabel txtDisciplina;
 	private JComboBox selecaoDisc;
-	private JButton btnNewButton;
+	private JComboBox selecaoProf;
+	private JButton btnEnvia;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(Boolean isEditMode) {
+	public static void main(Boolean isEditMode, Inscricao insc, int i) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaManterInscricao frame = new TelaManterInscricao(isEditMode);
+					TelaManterInscricao frame = new TelaManterInscricao(isEditMode, insc, i);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -46,8 +57,9 @@ public class TelaManterInscricao extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws Exception 
 	 */
-	public TelaManterInscricao(Boolean isEditMode) {
+	public TelaManterInscricao(Boolean isEditMode, Inscricao insc, int i) throws Exception {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 589, 280);
 		contentPane = new JPanel();
@@ -56,7 +68,7 @@ public class TelaManterInscricao extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JTextPane txtpnAdicionarDisciplina = new JTextPane();
+		JLabel txtpnAdicionarDisciplina = new JLabel();
 		txtpnAdicionarDisciplina.setBackground(new Color(237, 238, 238));
 		if(isEditMode){
 			txtpnAdicionarDisciplina.setText("Editar Inscrição");
@@ -67,16 +79,30 @@ public class TelaManterInscricao extends JFrame {
 		txtpnAdicionarDisciplina.setBounds(198, 6, 206, 31);
 		contentPane.add(txtpnAdicionarDisciplina);
 		
-		JTextPane txtpnDisciplina = new JTextPane();
-		txtpnDisciplina.setEditable(false);
-		txtpnDisciplina.setText("Professor");
-		txtpnDisciplina.setFont(new Font("Arial", Font.PLAIN, 14));
-		txtpnDisciplina.setBackground(new Color(238, 238, 238));
-		txtpnDisciplina.setBounds(20, 51, 132, 37);
-		contentPane.add(txtpnDisciplina);
+		JLabel txtProfessor = new JLabel();
+		txtProfessor.setText("Professor");
+		txtProfessor.setFont(new Font("Arial", Font.PLAIN, 14));
+		txtProfessor.setBackground(new Color(238, 238, 238));
+		txtProfessor.setBounds(20, 51, 132, 37);
+		contentPane.add(txtProfessor);
 		
-		txtpnDigiteO = new JTextPane();
-		txtpnDigiteO.setEditable(false);
+		
+		
+		selecaoProf = new JComboBox();
+			Fila<Professor> filaProf = CSVProfessor.getProfessor();
+			int tamprof = filaProf.Size();
+			String[] professor = new String[tamprof];
+			for(int j=0; j<tamprof; j++) {
+				Professor p = filaProf.Remove();
+				professor[j]  =  p.getNome();
+			}
+		selecaoProf.setModel(new DefaultComboBoxModel(professor));
+		selecaoProf.setFont(new Font("Arial", Font.PLAIN, 16));
+		selecaoProf.setBounds(157, 49, 421, 41);
+		contentPane.add(selecaoProf);
+		
+		
+		txtpnDigiteO = new JLabel();
 		txtpnDigiteO.setText("Código do processo");
 		txtpnDigiteO.setFont(new Font("Arial", Font.PLAIN, 14));
 		txtpnDigiteO.setBackground(UIManager.getColor("Button.background"));
@@ -87,31 +113,73 @@ public class TelaManterInscricao extends JFrame {
 		codProcesso.setColumns(10);
 		codProcesso.setBounds(157, 100, 421, 37);
 		contentPane.add(codProcesso);
-		
-		txtpnDigiteODia = new JTextPane();
-		txtpnDigiteODia.setEditable(false);
-		txtpnDigiteODia.setText("Disciplina");
-		txtpnDigiteODia.setFont(new Font("Arial", Font.PLAIN, 14));
-		txtpnDigiteODia.setBackground(UIManager.getColor("Button.background"));
-		txtpnDigiteODia.setBounds(20, 153, 132, 37);
-		contentPane.add(txtpnDigiteODia);
+	
+		txtDisciplina = new JLabel();
+		txtDisciplina.setText("Disciplina");
+		txtDisciplina.setFont(new Font("Arial", Font.PLAIN, 14));
+		txtDisciplina.setBackground(UIManager.getColor("Button.background"));
+		txtDisciplina.setBounds(20, 153, 132, 37);
+		contentPane.add(txtDisciplina);
 		
 		selecaoDisc = new JComboBox();
-		selecaoDisc.setModel(new DefaultComboBoxModel(new String[] {"Disciplina"}));
+		Fila<Disciplinas> filaDisc = CSVDisciplinas.getDisciplinas();
+		int tamdisc = filaDisc.Size();
+		String[] disciplinas = new String[tamdisc];
+		for(int j=0; j<tamdisc; j++) {
+			Disciplinas d = filaDisc.Remove();
+			disciplinas[j]  =  d.getNomeDisciplina();
+		}
+		
+		selecaoDisc.setModel(new DefaultComboBoxModel(disciplinas));
 		selecaoDisc.setFont(new Font("Arial", Font.PLAIN, 16));
 		selecaoDisc.setBounds(157, 149, 421, 41);
 		contentPane.add(selecaoDisc);
 		
-		btnNewButton = new JButton("Enviar");
-		btnNewButton.setBackground(new Color(255, 255, 255));
-		btnNewButton.setBounds(461, 204, 117, 29);
-		contentPane.add(btnNewButton);
+		btnEnvia = new JButton("Enviar");
+		btnEnvia.setBackground(new Color(255, 255, 255));
+		btnEnvia.setBounds(461, 204, 117, 29);
+		contentPane.add(btnEnvia);
 		
-		JComboBox selecaoProf = new JComboBox();
-		selecaoProf.setFont(new Font("Arial", Font.PLAIN, 16));
-		selecaoProf.setModel(new DefaultComboBoxModel(new String[] {"Professor"}));
-		selecaoProf.setBounds(157, 49, 421, 46);
-		contentPane.add(selecaoProf);
+		ActionListener actListenerEnvia = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String codDisc = "";
+				String cpf = "";
+				Fila<Disciplinas> filaDisc2 = CSVDisciplinas.getDisciplinas();
+				int tamdiscaux = filaDisc2.Size();
+				for(int j=0;j<tamdiscaux;j++) {
+					Disciplinas d = new Disciplinas("","","",null,0,"");
+					try {
+						d = filaDisc2.Remove();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					if(selecaoDisc.getSelectedItem().toString().equals(d.getNomeDisciplina())) {
+						codDisc = d.getCodigoDisciplina(); 
+					}
+				}
+				
+				Fila<Professor> filaProf2 = CSVProfessor.getProfessor();
+				int tamprofaux = filaProf2.Size();
+				for(int j=0;j<tamprofaux;j++) {
+					Professor p = new Professor("","",0.0,"");
+					try {
+						p = filaProf2.Remove();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					if(selecaoProf.getSelectedItem().toString().equals(p.getNome())) {
+						cpf = p.getCPF();
+					}
+				}
+				Inscricao inscNew = new Inscricao(codProcesso.getText(),cpf,codDisc);
+				CSVInscricao.addInscricao(inscNew);
+				
+				TelaInscricoes.main(null);
+				dispose();
+			}
+		};
+		
+		btnEnvia.addActionListener(actListenerEnvia);
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.setIcon(new ImageIcon("./img/voltar.png"));

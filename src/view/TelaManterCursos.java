@@ -125,16 +125,16 @@ public class TelaManterCursos extends JFrame {
 		//envia aqui abaixo
 		ActionListener actEnviar = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Cursos cursoTmp = new Cursos(nomeCurso.getText(),areaCurso.getText(),Integer.parseInt(codCurso.getText()));
+				Cursos cursoNew = new Cursos(nomeCurso.getText(),areaCurso.getText(),Integer.parseInt(codCurso.getText()));
 				if(isEditMode) {
 					try {
-						CSVCursos.updateCursos(curso, i);
+						CSVCursos.updateCursos(cursoNew, i);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 					
 				}else {
-					CSVCursos.addCurso(cursoTmp);
+					CSVCursos.addCurso(cursoNew);
 				}
 				TelaCursos.main(null);
 				dispose();
