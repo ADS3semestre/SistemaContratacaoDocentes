@@ -6,7 +6,7 @@ public class Professor {
 	private double quantidadePontos;
 	private String area;
 	
-	public Professor(String CPF, String Nome, double quantidadePontos, String area) {
+	public Professor(String Nome, String CPF, double quantidadePontos, String area) {
 		this.CPF = CPF;
 		this.Nome = Nome;
 		this.quantidadePontos = quantidadePontos;
