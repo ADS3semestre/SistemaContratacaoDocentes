@@ -3,10 +3,8 @@ package view;
 import java.awt.EventQueue;
 
 import com.destny.fila.Fila;
-import com.destny.model.ListaLib;
 
 import controller.*;
-import view.TelaManterDisciplina;
 import model.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,13 +12,10 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.Color;
-import javax.swing.JTextPane;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JList;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;

@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import com.destny.fila.Fila;
-import com.destny.model.ListaLib;
 
 import controller.CSVCursos;
 import controller.CSVDisciplinas;
@@ -19,7 +18,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
@@ -27,7 +25,6 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 
 public class TelaManterDisciplina extends JFrame {
 

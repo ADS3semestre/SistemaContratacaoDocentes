@@ -8,16 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextField;
 import java.awt.Font;
-import javax.swing.JTextPane;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import view.TelaDisciplinas;
-import view.TelaCursos;
-import view.TelaProfessor;
-import view.TelaInscricoes;
 import javax.swing.JLabel;
 
 

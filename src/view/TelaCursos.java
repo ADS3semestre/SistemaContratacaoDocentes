@@ -8,22 +8,22 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import com.destny.fila.Fila;
-import com.destny.model.ListaLib;
 
-import controller.CSVController;
+
+
 import controller.CSVCursos;
 import model.Cursos;
-import model.Disciplinas;
+
 
 import javax.swing.JButton;
 import java.awt.Color;
-import javax.swing.JTextPane;
+
 import java.awt.Font;
-import java.awt.Image;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JList;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
