@@ -61,8 +61,9 @@ public class CSVProfessor {
         String cpfProf = professor.getCPF();
         String nome = professor.getNome();
         Double qtdPontos = professor.getQuantidadePontos();
+        String area = professor.getArea();
 
-        line = ("\n" + cpfProf + "," + nome + "," + qtdPontos);
+        line = ("\n" + cpfProf + "," + nome + "," + qtdPontos + "," + area);
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
             writer.append(line);
@@ -88,7 +89,7 @@ public class CSVProfessor {
                 String qtdPontos = Double.toString(prof.getQuantidadePontos());
                 String area =  prof.getArea();
 
-                 String line = ("\n" + cPF + "," + nome + "," + qtdPontos + ","+area);
+                 String line = ("\n" + nome + "," + cPF + "," + qtdPontos + ","+area);
                  writer.append(line);
             }
             writer.flush();
