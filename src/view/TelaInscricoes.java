@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.destny.model.ListaLib;
+import com.destny.model.Fila;
 
 import controller.CSVController;
 import controller.CSVDisciplinas;
@@ -33,6 +33,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollPane;
+import com.destny.fila.Fila;
 
 public class TelaInscricoes extends JFrame {
 
@@ -46,10 +47,10 @@ public class TelaInscricoes extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ListaLib<Inscricao> listaInsc = CSVIncricao.getInscricao();
-					ListaLib<Professor> listaProf = CSVProfessor.getProfessor();
-					ListaLib<Disciplinas> listaDisc = CSVDisciplinas.getDisciplinas();
-					TelaInscricoes frame = new TelaInscricoes(listaInsc, listaProf, listaDisc);
+					Fila<Inscricao> filaInsc = CSVIncricao.getInscricao();
+					Fila<Professor> filaProf = CSVProfessor.getProfessor();
+					Fila<Disciplinas> filaDisc = CSVDisciplinas.getDisciplinas();
+					TelaInscricoes frame = new TelaInscricoes(filaInsc, filaProf, filaDisc);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,7 +62,7 @@ public class TelaInscricoes extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaInscricoes(ListaLib<Inscricao> listaInsc, ListaLib<Professor> listaProf,ListaLib<Disciplinas> listaDisc) throws Exception {
+	public TelaInscricoes(Fila<Inscricao> filaInsc, Fila<Professor> filaProf,Fila<Disciplinas> filaDisc) throws Exception {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 349);
@@ -88,9 +89,9 @@ public class TelaInscricoes extends JFrame {
 		JPanel panelContainer = new JPanel();
 		panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
 		
-		for(int i=0; i<listaInsc.size(); i++) {
+		for(int i=0; i<filaInsc.Size(); i++) {
 			
-			Inscricao insc = listaInsc.get(i);
+			Inscricao insc = filaInsc.Remove();
 			int posItn = 6;
 			
 			JPanel panel = new JPanel();
@@ -124,8 +125,8 @@ public class TelaInscricoes extends JFrame {
 				txtPont.setBounds(6, posItn, 330, 16);
 				panel.add(txtPont);
 				
-				for (int j=0; j<listaProf.size(); j++) {
-					Professor prof = listaProf.get(j);
+				for (int j=0; j<filaProf.Size(); j++) {
+					Professor prof = filaProf.Remove();
 					if(prof.getCPF() == insc.getCPF()) {
 						txtNome.setText("Nome do professor: " + prof.getNome());
 						txtPont.setText("Quantidade de pontos: "+Double.toString(prof.getQuantidadePontos()));
@@ -181,9 +182,9 @@ public class TelaInscricoes extends JFrame {
 		scrollPane.setBounds(6, 94, 533, 200);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		String[] vet = new String[listaDisc.size()];
-		for(int i=0; i<listaDisc.size(); i++) {
-			Disciplinas disc = listaDisc.get(i);
+		String[] vet = new String[filaDisc.Size()];
+		for(int i=0; i<filaDisc.Size(); i++) {
+			Disciplinas disc = filaDisc.Remove();
 			vet[i] = disc.getNomeDisciplina();
 		}
 		

@@ -148,12 +148,12 @@ public class TelaDisciplinas extends JFrame {
 			
 			int posBlock = 6;
 			
-			JLabel txtDisc = new JLabel("Nome da Disciplina: " + disc.getNomeDisciplina());
+			JLabel txtDisc = new JLabel("<html><div style='width:250px;'>Nome da Disciplina: " + disc.getNomeDisciplina()+"</html>");
 			txtDisc.setFont(new Font("Arial", Font.PLAIN, 16));
-			txtDisc.setBounds(6, posBlock, 350, 16);
+			txtDisc.setBounds(6, posBlock, 350, txtDisc.getPreferredSize().height);
 			panel.add(txtDisc);
 			
-			posBlock += 19;
+			posBlock += txtDisc.getPreferredSize().height;
 			
 			JLabel txtCodDisc = new JLabel("Código da Disciplina: " + disc.getCodigoDisciplina());
 			txtCodDisc.setBounds(6, posBlock, 350, 16);
@@ -186,7 +186,8 @@ public class TelaDisciplinas extends JFrame {
 			pos += 135;
 
 			panelContainer.add(panel);
-			panelContainer.add(Box.createVerticalStrut(10)); 
+			panelContainer.add(Box.createVerticalStrut(10));
+			panelContainer.setPreferredSize(new java.awt.Dimension(520,((txtDisc.getPreferredSize().height+160)*tam)));
 		}
 
 		// Coloca o painelContainer no JScrollPane
