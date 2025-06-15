@@ -27,7 +27,6 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollPane;
 import com.destny.fila.Fila;
-import com.destny.model.ListaLib;
 
 public class TelaInscricoes extends JFrame {
 
@@ -230,26 +229,33 @@ public class TelaInscricoes extends JFrame {
 				Fila<Inscricao> filaInscOrd = new Fila<>();
 				if(comboPontuacao.getSelectedItem().toString().equals("Pontuação - Decrescente")) {		
 					try {
-						filaInscOrd = CSVInscricao.filterQuick(false);
+						filaInscOrd = CSVInscricao.filterPontuation(false);
+						if(comboDisc.getSelectedIndex()>0) {
+							filaInscOrd = CSVInscricao.filterByName(comboDisc.getSelectedItem().toString(), filaInscOrd);
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					main(filaInscOrd, 2,0);
+						
+					main(filaInscOrd, 2,comboDisc.getSelectedIndex());
 					dispose();
 				}
 
 				else if(comboPontuacao.getSelectedItem().toString().equals("Pontuação - Crescente")) {
 					try {
-						filaInscOrd = CSVInscricao.filterQuick(true);
+						filaInscOrd = CSVInscricao.filterPontuation(true);
+						if(comboDisc.getSelectedIndex()>0) {
+							filaInscOrd = CSVInscricao.filterByName(comboDisc.getSelectedItem().toString(), filaInscOrd);
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					main(filaInscOrd, 1,0);
+					main(filaInscOrd, 1,comboDisc.getSelectedIndex());
 					dispose();
 				}
 				
 				else if(comboPontuacao.getSelectedItem().toString().equals("Pontuação - Padrão")) {
-					main(CSVInscricao.getInscricao(), 0,0);
+					main(CSVInscricao.getInscricao(), 0,comboDisc.getSelectedIndex());
 					dispose();
 				}
 			}
@@ -269,7 +275,8 @@ public class TelaInscricoes extends JFrame {
 					dispose();
 				}else {
 					try {
-						main(CSVInscricao.filterByName(comboDisc.getSelectedItem().toString()), 0, comboDisc.getSelectedIndex());
+						Fila<Inscricao> fFiltradaInsc = CSVInscricao.filterByName(comboDisc.getSelectedItem().toString(), CSVInscricao.getInscricao());
+						main(fFiltradaInsc, 0, comboDisc.getSelectedIndex());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

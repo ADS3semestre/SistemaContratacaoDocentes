@@ -195,7 +195,8 @@ public class TelaManterDisciplina extends JFrame {
 			horarioDisciplina.setText(disciplina.getHoraInicio().toString());
 			qtdHrsSemanais.setText(Integer.toString(disciplina.getHorasDiarias()));
 			String nomeCurso = "";
-			for (int j=0; j<filaCurs.Size(); j++) {
+			int posCursoAux = filaCurs.Size();
+			for (int j=0; j<posCursoAux; j++) {
 				Cursos curs = filaCurs.Remove();
 				if(disciplina.getCodCurso().equals(curs.getCodigo())) {
 					nomeCurso = curs.getNome();
@@ -222,10 +223,12 @@ public class TelaManterDisciplina extends JFrame {
 				public void actionPerformed(ActionEvent arg0) {
 					String curso = "";
 					try {
-						for(int j=0; j<filaCurs.Size(); j++) {
-							if (cursoDisciplina.getSelectedItem().toString().equals(vetCursos[j].getNome())){
-								curso = Integer.toString(vetCursos[j].getCodigo());
-								System.out.println(curso);
+						Fila<Cursos> filaCurs2 = CSVCursos.getCursos();
+						int posCursoAux = filaCurs2.Size();
+						for(int j=0; j<posCursoAux; j++) {
+							Cursos c = filaCurs2.Remove();
+							if (cursoDisciplina.getSelectedItem().toString().equals(c.getNome().toString())){
+								curso = Integer.toString(c.getCodigo());
 							}
 						}
 					} catch (Exception e) {

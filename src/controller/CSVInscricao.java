@@ -139,10 +139,9 @@ public class CSVInscricao {
     	}
     }
     
-    public static Fila<Inscricao> filterByName(String nome) throws Exception {
+    public static Fila<Inscricao> filterByName(String nome, Fila<Inscricao> filaInsc2) throws Exception {
 				Fila<Disciplinas> filaDisc = CSVDisciplinas.getDisciplinas();
 				Fila<Inscricao> filaInscFiltro = new Fila<>();
-				Fila<Inscricao> filaInsc2 = getInscricao();
 				int tamAux = filaDisc.Size();
 				int posVetD = 0;
 				try {
@@ -167,7 +166,7 @@ public class CSVInscricao {
 				return filaInscFiltro;
     }
     
-    public static Fila<Inscricao> filterQuick(Boolean isAscendingOrder) throws Exception{
+    public static Fila<Inscricao> filterPontuation(Boolean isAscendingOrder) throws Exception{
     	Fila<Professor> filaProf2 = CSVProfessor.getProfessor();
 		ListaLib<Professor> listaProf = new ListaLib<>();
 		int tam2 = filaProf2.Size();

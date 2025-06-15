@@ -18,6 +18,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.destny.fila.Fila;
 
+import controller.CSVDisciplinas;
 import controller.CSVInscricao;
 import controller.CSVProfessor;
 import model.Disciplinas;
@@ -70,7 +71,7 @@ public class TelaDisciplinas_Inscritos extends JFrame {
 		JPanel panelContainer = new JPanel();
 		panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
 		
-		Fila<Inscricao> filaInscDisc = CSVInscricao.filterByName(disc.getNomeDisciplina());
+		Fila<Inscricao> filaInscDisc = CSVInscricao.filterByName(disc.getNomeDisciplina(),CSVInscricao.getInscricao());
 		
 		int tam = filaInscDisc.Size();
 		

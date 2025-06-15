@@ -156,7 +156,7 @@ public class TelaProfessor extends JFrame {
 					
 					panelContainer.add(panel);
 					panelContainer.add(Box.createVerticalStrut(10));
-					panelContainer.setPreferredSize(new java.awt.Dimension(520,((txtNome.getPreferredSize().height+60)*tam)));
+					panelContainer.setPreferredSize(new java.awt.Dimension(520,((txtNome.getPreferredSize().height+100)*tam)));
 		}
 
 		JScrollPane scrollPane = new JScrollPane(panelContainer);
