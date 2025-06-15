@@ -170,7 +170,9 @@ public class TelaManterInscricao extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String codDisc = "";
 				String cpf = "";
-				Fila<Disciplinas> filaDisc2 = CSVDisciplinas.getDisciplinas();
+				Fila<Disciplinas> filaDisc2;
+				try {
+					filaDisc2 = CSVDisciplinas.getDisciplinas();
 				int tamdiscaux = filaDisc2.Size();
 				for(int j=0;j<tamdiscaux;j++) {
 					Disciplinas d = new Disciplinas("","","",null,0,"");
@@ -183,8 +185,12 @@ public class TelaManterInscricao extends JFrame {
 						codDisc = d.getCodigoDisciplina(); 
 					}
 				}
-				
-				Fila<Professor> filaProf2 = CSVProfessor.getProfessor();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				Fila<Professor> filaProf2;
+				try {
+					filaProf2 = CSVProfessor.getProfessor();
 				int tamprofaux = filaProf2.Size();
 				for(int j=0;j<tamprofaux;j++) {
 					Professor p = new Professor("","",0.0,"");
@@ -214,6 +220,9 @@ public class TelaManterInscricao extends JFrame {
 				}
 				TelaInscricoes.main(CSVInscricao.getInscricao(),0,0);
 				dispose();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		};
 		
@@ -226,7 +235,11 @@ public class TelaManterInscricao extends JFrame {
 		
 		ActionListener actListenerBack = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TelaInscricoes.main(CSVInscricao.getInscricao(),0,0);
+				try {
+					TelaInscricoes.main(CSVInscricao.getInscricao(),0,0);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				dispose();
 			}
 		};

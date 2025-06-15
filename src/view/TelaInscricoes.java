@@ -255,7 +255,11 @@ public class TelaInscricoes extends JFrame {
 				}
 				
 				else if(comboPontuacao.getSelectedItem().toString().equals("Pontuação - Padrão")) {
-					main(CSVInscricao.getInscricao(), 0,comboDisc.getSelectedIndex());
+					try {
+						main(CSVInscricao.getInscricao(), 0,comboDisc.getSelectedIndex());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					dispose();
 				}
 			}
@@ -271,7 +275,11 @@ public class TelaInscricoes extends JFrame {
 		ActionListener actFiltro = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(comboDisc.getSelectedIndex() == 0) {
-					main(CSVInscricao.getInscricao(), 0, 0);
+					try {
+						main(CSVInscricao.getInscricao(), 0, 0);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					dispose();
 				}else {
 					try {

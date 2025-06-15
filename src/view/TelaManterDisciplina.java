@@ -245,7 +245,11 @@ public class TelaManterDisciplina extends JFrame {
 							e.printStackTrace();
 						}
 					}else {
-						CSVDisciplinas.addDisciplina(disc);
+						try {
+							CSVDisciplinas.addDisciplina(disc);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 					TelaDisciplinas.main(null);
 					dispose();	

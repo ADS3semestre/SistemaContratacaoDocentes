@@ -147,7 +147,11 @@ public class TelaManterProfessor extends JFrame {
 						e.printStackTrace();
 					}
 				}else {
-					CSVProfessor.addProfessor(profNew);
+					try {
+						CSVProfessor.addProfessor(profNew);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 				TelaProfessor.main(null);
 				dispose();

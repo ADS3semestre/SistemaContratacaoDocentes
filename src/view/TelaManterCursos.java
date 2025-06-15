@@ -131,7 +131,11 @@ public class TelaManterCursos extends JFrame {
 					}
 					
 				}else {
-					CSVCursos.addCurso(cursoNew);
+					try {
+						CSVCursos.addCurso(cursoNew);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 				TelaCursos.main(null);
 				dispose();
