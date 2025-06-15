@@ -6,10 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import com.destny.fila.Fila;
 
 import controller.CSVInscricao;
-import model.Inscricao;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;

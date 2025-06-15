@@ -63,7 +63,6 @@ public class TelaManterDisciplina extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	@SuppressWarnings("unchecked")
 	public TelaManterDisciplina(Boolean isEditMode, Disciplinas disciplina, int pos) throws Exception{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 600, 413);
@@ -232,7 +231,6 @@ public class TelaManterDisciplina extends JFrame {
 							}
 						}
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					Disciplinas disc = new Disciplinas(nomeDisciplina.getText(),codDisciplina.getText(), diaSemana.getSelectedItem().toString(),LocalTime.parse(horarioDisciplina.getText()), Integer.parseInt(qtdHrsSemanais.getText()), curso);
@@ -241,7 +239,6 @@ public class TelaManterDisciplina extends JFrame {
 						try {
 							CSVDisciplinas.updateDisciplina(disc, pos);
 						} catch (Exception e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 					}else {

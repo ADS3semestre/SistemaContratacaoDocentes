@@ -18,14 +18,12 @@ import javax.swing.border.EmptyBorder;
 
 import com.destny.fila.Fila;
 
-import controller.CSVDisciplinas;
 import controller.CSVInscricao;
 import controller.CSVProfessor;
 import model.Disciplinas;
 import model.Inscricao;
 import model.Professor;
 
-import javax.swing.JLabel;
 
 public class TelaDisciplinas_Inscritos extends JFrame {
 
