@@ -92,7 +92,7 @@ public class TelaProfessor extends JFrame {
 		
 		int tam = filaProf.Size();
 		
-		for(int i=0; i<tam; i++) {
+		for(int i=0; i<filaProf.Size(); i++) {
 					
 				int posItn = 6;
 				Professor prof = filaProf.Remove();
@@ -162,7 +162,7 @@ public class TelaProfessor extends JFrame {
 					
 					panelContainer.add(panel);
 					panelContainer.add(Box.createVerticalStrut(8));
-					panelContainer.setPreferredSize(new java.awt.Dimension(520,((txtNome.getPreferredSize().height+60)*tam)));
+					panelContainer.setPreferredSize(new java.awt.Dimension(520,250+txtNome.getPreferredSize().height));
 		}
 
 		JScrollPane scrollPane = new JScrollPane(panelContainer);

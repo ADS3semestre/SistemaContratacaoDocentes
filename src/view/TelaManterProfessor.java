@@ -31,7 +31,7 @@ public class TelaManterProfessor extends JFrame {
 	private JTextField cpfProf;
 	private JLabel txtPontuacao;
 	private JTextField pontosProf;
-	private JButton btnEnvia;
+	private JButton btnNewButton;
 	private JTextField areaProf;
 
 	/**
@@ -110,10 +110,10 @@ public class TelaManterProfessor extends JFrame {
 		pontosProf.setBounds(157, 145, 421, 37);
 		contentPane.add(pontosProf);
 		
-		btnEnvia = new JButton("Enviar");
-		btnEnvia.setBackground(new Color(255, 255, 255));
-		btnEnvia.setBounds(461, 252, 117, 29);
-		contentPane.add(btnEnvia);
+		btnNewButton = new JButton("Enviar");
+		btnNewButton.setBackground(new Color(255, 255, 255));
+		btnNewButton.setBounds(461, 252, 117, 29);
+		contentPane.add(btnNewButton);
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.setIcon(new ImageIcon("./img/voltar.png"));
@@ -133,31 +133,20 @@ public class TelaManterProfessor extends JFrame {
 		areaProf.setBounds(157, 194, 421, 37);
 		contentPane.add(areaProf);
 		
-		if(isEditMode) {
-			cpfProf.setText(prof.getCPF());
-			nomeProf.setText(prof.getNome());
-			pontosProf.setText(Double.toString(prof.getQuantidadePontos()));
-			areaProf.setText(prof.getArea());
-		}
-		
 		ActionListener actListenerEnvia = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Professor profNew = new Professor(cpfProf.getText(),nomeProf.getText(),Double.parseDouble(pontosProf.getText()), areaProf.getText());
+				
 				if(isEditMode) {
-					try {
-						CSVProfessor.updateProfessor(prof, i);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					
 				}else {
+					Professor profNew = new Professor(cpfProf.getText(),nomeProf.getText(),Double.parseDouble(pontosProf.getText()), areaProf.getText());
 					CSVProfessor.addProfessor(profNew);
+					TelaProfessor.main(null);
+					dispose();
 				}
-				TelaProfessor.main(null);
-				dispose();
 			}
 		};
 		
-		btnEnvia.addActionListener(actListenerEnvia);
 		
 		
 		ActionListener actListenerBack = new ActionListener() {
