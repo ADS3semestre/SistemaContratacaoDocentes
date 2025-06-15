@@ -6,12 +6,24 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextPane;
+import javax.swing.JScrollPane;
+import javax.swing.JLabel;
 import javax.swing.border.EmptyBorder;
+
+import com.destny.fila.Fila;
+
+import controller.CSVInscricao;
+import controller.CSVProfessor;
+import model.Disciplinas;
+import model.Inscricao;
+import model.Professor;
+
 import javax.swing.JLabel;
 
 public class TelaDisciplinas_Inscritos extends JFrame {
@@ -22,11 +34,11 @@ public class TelaDisciplinas_Inscritos extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(Disciplinas disc) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					TelaDisciplinas_Inscritos frame = new TelaDisciplinas_Inscritos();
+					TelaDisciplinas_Inscritos frame = new TelaDisciplinas_Inscritos(disc);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -37,8 +49,9 @@ public class TelaDisciplinas_Inscritos extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @throws Exception 
 	 */
-	public TelaDisciplinas_Inscritos() {
+	public TelaDisciplinas_Inscritos(Disciplinas disc) throws Exception {
 		setBounds(100, 100, 550, 349);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		contentPane = new JPanel();
@@ -47,58 +60,84 @@ public class TelaDisciplinas_Inscritos extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JTextPane txtInscricoes = new JTextPane();
-		txtInscricoes.setEditable(false);
+		JLabel txtInscricoes = new JLabel();
 		txtInscricoes.setBackground(new Color(238, 238, 238));
 		txtInscricoes.setFont(new Font("Arial", Font.PLAIN, 24));
 		txtInscricoes.setText("Inscritos da Disciplina");
 		txtInscricoes.setBounds(163, 10, 236, 28);
 		contentPane.add(txtInscricoes);
 		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 255));
-		panel.setBounds(6, 74, 538, 127);
-		contentPane.add(panel);
-		panel.setLayout(null);
+		JPanel panelContainer = new JPanel();
+		panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
 		
-		JTextPane txtNome = new JTextPane();
-		txtNome.setBounds(6, 6, 270, 19);
-		panel.add(txtNome);
-		txtNome.setFont(new Font("Arial", Font.PLAIN, 16));
-		txtNome.setText("Nome");
+		Fila<Inscricao> filaInscDisc = CSVInscricao.filterByName(disc.getNomeDisciplina());
 		
-		JTextPane txtCPF = new JTextPane();
-		txtCPF.setBounds(6, 25, 75, 16);
-		panel.add(txtCPF);
-		txtCPF.setText("CPF");
-		txtCPF.setFont(new Font("Arial", Font.PLAIN, 13));
+		int tam = filaInscDisc.Size();
 		
-		JTextPane txtCod = new JTextPane();
-		txtCod.setText("CodigoProcesso");
-		txtCod.setFont(new Font("Arial", Font.PLAIN, 13));
-		txtCod.setBounds(6, 43, 110, 16);
-		panel.add(txtCod);
+		for(int i=0; i<tam; i++) {
+			
+			Inscricao insc = filaInscDisc.Remove();
+			
+			JPanel panel = new JPanel();
+			panel.setBackground(new Color(255, 255, 255));
+			panel.setBounds(6, 74, 538, 127);
+			contentPane.add(panel);
+			panel.setLayout(null);
+			
+			JLabel txtNome = new JLabel();
+			txtNome.setBounds(6, 6, 400, 19);
+			panel.add(txtNome);
+			txtNome.setFont(new Font("Arial", Font.PLAIN, 16));
+			
+			
+			JLabel txtCPF = new JLabel();
+			txtCPF.setBounds(6, 25, 400, 16);
+			panel.add(txtCPF);
+			txtCPF.setText("CPF: " + insc.getCPF());
+			txtCPF.setFont(new Font("Arial", Font.PLAIN, 13));
+			
+			JLabel txtCod = new JLabel();
+			txtCod.setText("Código do processo: " + insc.getCodProcesso());
+			txtCod.setFont(new Font("Arial", Font.PLAIN, 13));
+			txtCod.setBounds(6, 41, 400, 16);
+			panel.add(txtCod);
+			
+			JLabel txtPont = new JLabel();
+			txtPont.setFont(new Font("Arial", Font.PLAIN, 13));
+			txtPont.setBounds(6, 57, 400, 16);
+			panel.add(txtPont);
+			
+			JLabel txtCodDis = new JLabel();
+			txtCodDis.setText("Código da Disciplina: " + insc.getCodigoDisciplina());
+			txtCodDis.setFont(new Font("Arial", Font.PLAIN, 13));
+			txtCodDis.setBounds(6, 73, 400, 16);
+			panel.add(txtCodDis);
+			
+			Fila<Professor> filaProf = CSVProfessor.getProfessor();
+			int tamProf = filaProf.Size();
+			for(int j=0; j<tamProf; j++) {
+				Professor p = filaProf.Remove();
+				if(p.getCPF().equals(insc.getCPF())) {
+					txtNome.setText("Nome: " + p.getNome());
+					txtPont.setText("Quantidade de pontos: " + Double.toString(p.getQuantidadePontos()));
+				}
+			}
+			
+			
+			panelContainer.add(panel);
+			panelContainer.add(Box.createVerticalStrut(10));
+			panelContainer.setPreferredSize(new java.awt.Dimension(520,((txtNome.getPreferredSize().height+120)*tam)));
+		}
 		
-		JTextPane txtPont = new JTextPane();
-		txtPont.setText("Pontuacao");
-		txtPont.setFont(new Font("Arial", Font.PLAIN, 13));
-		txtPont.setBounds(6, 62, 110, 16);
-		panel.add(txtPont);
 		
-		JTextPane txtCodDis = new JTextPane();
-		txtCodDis.setText("CodigoDisciplina");
-		txtCodDis.setFont(new Font("Arial", Font.PLAIN, 13));
-		txtCodDis.setBounds(6, 80, 110, 16);
-		panel.add(txtCodDis);
+		JScrollPane scrollPane = new JScrollPane(panelContainer);
+		scrollPane.setBounds(6, 94, 533, 200);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		contentPane.add(scrollPane);
 		
-		JTextPane txtPontos = new JTextPane();
-		txtPontos.setText("Status");
-		txtPontos.setFont(new Font("Arial", Font.PLAIN, 13));
-		txtPontos.setBounds(6, 100, 110, 16);
-		panel.add(txtPontos);
-		
-		JLabel lblDisciplina = new JLabel("New label");
-		lblDisciplina.setBounds(184, 42, 182, 16);
+		JLabel lblDisciplina = new JLabel(disc.getNomeDisciplina());
+		lblDisciplina.setBounds(125, 42, 300, 16);
 		contentPane.add(lblDisciplina);
 		lblDisciplina.setHorizontalAlignment(JLabel.CENTER);
 		

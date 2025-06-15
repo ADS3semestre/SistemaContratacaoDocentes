@@ -27,6 +27,7 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollPane;
 import com.destny.fila.Fila;
+import com.destny.model.ListaLib;
 
 public class TelaInscricoes extends JFrame {
 
@@ -36,13 +37,11 @@ public class TelaInscricoes extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	public static void main(Fila<Inscricao> filaInsc, int org, int disc) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Fila<Inscricao> filaInsc = CSVInscricao.getInscricao();
-					Fila<Disciplinas> filaDisc = CSVDisciplinas.getDisciplinas();
-					TelaInscricoes frame = new TelaInscricoes(filaInsc, filaDisc);
+					TelaInscricoes frame = new TelaInscricoes(filaInsc, org, disc);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,8 +53,8 @@ public class TelaInscricoes extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public TelaInscricoes(Fila<Inscricao> filaInsc,Fila<Disciplinas> filaDisc) throws Exception {
-		
+	public TelaInscricoes(Fila<Inscricao> filaInsc, int ordem, int disc) throws Exception {
+			
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 550, 349);
 		contentPane = new JPanel();
@@ -87,7 +86,7 @@ public class TelaInscricoes extends JFrame {
 		btnInsc.addActionListener(actListenerAdd);
 		
 		int pos = 137;
-		
+		int tam2 = 0;
 		JPanel panelContainer = new JPanel();
 		panelContainer.setLayout(new BoxLayout(panelContainer, BoxLayout.Y_AXIS));
 		
@@ -135,7 +134,7 @@ public class TelaInscricoes extends JFrame {
 				txtPont.setBounds(6, 78, 330, 16);
 				panel.add(txtPont);
 				
-				int tam2 = filaProf.Size();
+				tam2 = filaProf.Size();
 				
 				for (int j=0; j<tam2; j++) {
 					Professor prof = filaProf.Remove();
@@ -148,12 +147,12 @@ public class TelaInscricoes extends JFrame {
 				
 				JButton btnEdita = new JButton("Editar");
 				btnEdita.setIcon(new ImageIcon("./img/edit.png"));
-				btnEdita.setBounds(425, 10, 96, 36);
+				btnEdita.setBounds(415, 10, 96, 36);
 				panel.add(btnEdita);
 				
 				JButton btnApaga = new JButton("Apagar");
 				btnApaga.setIcon(new ImageIcon("./img/delete.png"));
-				btnApaga.setBounds(425, 45, 96, 36);
+				btnApaga.setBounds(415, 45, 96, 36);
 				panel.add(btnApaga);
 				
 				pos += 145;
@@ -175,7 +174,7 @@ public class TelaInscricoes extends JFrame {
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						main(null);
+						main(null, 0,0);
 						dispose();
 					}
 				};
@@ -188,6 +187,8 @@ public class TelaInscricoes extends JFrame {
 				panelContainer.setPreferredSize(new java.awt.Dimension(520,((txtNome.getPreferredSize().height+110)*tam)));
 		}
 		
+		
+		
 		// Coloca o painelContainer no JScrollPane
 		JScrollPane scrollPane = new JScrollPane(panelContainer);
 		scrollPane.setBounds(6, 130, 533, 170);
@@ -195,10 +196,17 @@ public class TelaInscricoes extends JFrame {
 		
 		contentPane.add(scrollPane);
 		
-		String[] vet = new String[filaDisc.Size()];
-		for(int i=0; i<filaDisc.Size(); i++) {
-			Disciplinas disc = filaDisc.Remove();
-			vet[i] = disc.getNomeDisciplina();
+		Fila<Disciplinas> filaDisc = CSVDisciplinas.getDisciplinas();
+		String[] vet = new String[filaDisc.Size()+1];
+		int tamAux = filaDisc.Size();
+		for(int i=0; i<=tamAux; i++) {
+			if(i==0) {
+				vet[i] = "Todas as disciplinas";
+			}
+			if(i>0) {
+				Disciplinas disc2 = filaDisc.Remove();
+				vet[i] = disc2.getNomeDisciplina();
+			}
 		}
 		
 		JComboBox comboDisc = new JComboBox();
@@ -206,10 +214,76 @@ public class TelaInscricoes extends JFrame {
 		comboDisc.setBounds(61, 98, 235, 27);
 		contentPane.add(comboDisc);
 		
+		comboDisc.setSelectedIndex(disc);
+		
 		JComboBox comboPontuacao = new JComboBox();
 		comboPontuacao.setModel(new DefaultComboBoxModel(new String[] {"Pontuação - Padrão", "Pontuação - Crescente", "Pontuação - Decrescente"}));
 		comboPontuacao.setBounds(308, 98, 236, 27);
 		contentPane.add(comboPontuacao);
+		
+		comboPontuacao.setSelectedIndex(ordem);
+		
+		
+		
+		ActionListener actOrdena = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Fila<Inscricao> filaInscOrd = new Fila<>();
+				if(comboPontuacao.getSelectedItem().toString().equals("Pontuação - Decrescente")) {		
+					try {
+						filaInscOrd = CSVInscricao.filterQuick(false);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					main(filaInscOrd, 2,0);
+					dispose();
+				}
+
+				else if(comboPontuacao.getSelectedItem().toString().equals("Pontuação - Crescente")) {
+					try {
+						filaInscOrd = CSVInscricao.filterQuick(true);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					main(filaInscOrd, 1,0);
+					dispose();
+				}
+				
+				else if(comboPontuacao.getSelectedItem().toString().equals("Pontuação - Padrão")) {
+					main(CSVInscricao.getInscricao(), 0,0);
+					dispose();
+				}
+			}
+
+		};
+		
+		comboPontuacao.addActionListener(actOrdena);
+		
+		
+		
+		
+		
+		ActionListener actFiltro = new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(comboDisc.getSelectedIndex() == 0) {
+					main(CSVInscricao.getInscricao(), 0, 0);
+					dispose();
+				}else {
+					try {
+						main(CSVInscricao.filterByName(comboDisc.getSelectedItem().toString()), 0, comboDisc.getSelectedIndex());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					dispose();
+				}
+			}
+		};
+		
+		comboDisc.addActionListener(actFiltro);
+		
+		
+		
+		
+		
 		
 		JLabel txtFiltros = new JLabel();
 		txtFiltros.setText("Filtros");
@@ -237,4 +311,9 @@ public class TelaInscricoes extends JFrame {
 		
 		
 	}
+	
+	
+	
+	
+	
 }

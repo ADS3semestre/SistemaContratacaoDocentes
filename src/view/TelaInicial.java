@@ -101,7 +101,7 @@ public class TelaInicial extends JFrame {
 		};
 		ActionListener actListenerI = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TelaInscricoes.main(null);
+				TelaInscricoes.main(CSVInscricao.getInscricao(),0,0);
 				dispose();
 			}
 		};

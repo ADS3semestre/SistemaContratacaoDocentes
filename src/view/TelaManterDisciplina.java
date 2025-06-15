@@ -41,7 +41,7 @@ public class TelaManterDisciplina extends JFrame {
 	private JTextField qtdHrsSemanais;
 	private JLabel txtpnSelecioneOCurso;
 	private JComboBox cursoDisciplina;
-	private JButton btnNewButton;
+	private JButton btnEnviar;
 
 	/**
 	 * Launch the application.
@@ -170,10 +170,10 @@ public class TelaManterDisciplina extends JFrame {
 		cursoDisciplina.setBounds(156, 303, 423, 27);
 		contentPane.add(cursoDisciplina);
 		
-		btnNewButton = new JButton("Enviar");
-		btnNewButton.setBackground(new Color(255, 255, 255));
-		btnNewButton.setBounds(461, 342, 117, 29);
-		contentPane.add(btnNewButton);
+		btnEnviar = new JButton("Enviar");
+		btnEnviar.setBackground(new Color(255, 255, 255));
+		btnEnviar.setBounds(461, 342, 117, 29);
+		contentPane.add(btnEnviar);
 		
 		JButton btnVoltar = new JButton("Voltar");
 		btnVoltar.setIcon(new ImageIcon("./img/voltar.png"));
@@ -249,7 +249,7 @@ public class TelaManterDisciplina extends JFrame {
 				}
 			};
 			
-			btnNewButton.addActionListener(actEnviar);
+			btnEnviar.addActionListener(actEnviar);
 			
 		}
 		

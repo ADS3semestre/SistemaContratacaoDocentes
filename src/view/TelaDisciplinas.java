@@ -115,7 +115,7 @@ public class TelaDisciplinas extends JFrame {
 			
 			ActionListener actListenerInsc = new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					TelaDisciplinas_Inscritos.main(null);
+					TelaDisciplinas_Inscritos.main(disc);
 					dispose();
 				}
 			};
@@ -182,9 +182,9 @@ public class TelaDisciplinas extends JFrame {
 
 			panelContainer.add(panel);
 			panelContainer.add(Box.createVerticalStrut(10));
-			panelContainer.setPreferredSize(new java.awt.Dimension(520,((txtDisc.getPreferredSize().height+160)*tam)));
 		}
-
+		
+		panelContainer.setPreferredSize(new java.awt.Dimension(520, (123 + 10) * tam));
 		// Coloca o painelContainer no JScrollPane
 		JScrollPane scrollPane = new JScrollPane(panelContainer);
 		scrollPane.setBounds(6, 94, 533, 200);

@@ -109,6 +109,8 @@ public class TelaManterInscricao extends JFrame {
 		contentPane.add(txtpnDigiteO);
 		
 		codProcesso = new JTextField();
+		codProcesso.setEditable(false);
+		codProcesso.setDisabledTextColor(getBackground());
 		codProcesso.setColumns(10);
 		codProcesso.setBounds(157, 100, 421, 37);
 		contentPane.add(codProcesso);
@@ -138,6 +140,31 @@ public class TelaManterInscricao extends JFrame {
 		btnEnvia.setBackground(new Color(255, 255, 255));
 		btnEnvia.setBounds(461, 204, 117, 29);
 		contentPane.add(btnEnvia);
+		
+		if (isEditMode) {
+			Fila<Professor> filaProfAux = CSVProfessor.getProfessor();
+			for(int j=0; j<tamprof; j++) {
+				Professor p2 = filaProfAux.Remove();
+				if (insc.getCPF().equals(p2.getCPF())) {
+					selecaoProf.setSelectedIndex(j);
+				}
+			}
+			codProcesso.setText(insc.getCodProcesso());
+			Fila<Disciplinas> filaDiscAux = CSVDisciplinas.getDisciplinas();
+			for(int j=0; j<tamprof; j++) {
+				Disciplinas d2 = filaDiscAux.Remove();
+				if (insc.getCodigoDisciplina().equals(d2.getCodigoDisciplina())) {
+					selecaoDisc.setSelectedIndex(j);
+				}
+			}
+				
+		}
+				
+		
+		
+		
+		
+		
 		
 		ActionListener actListenerEnvia = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -170,10 +197,22 @@ public class TelaManterInscricao extends JFrame {
 						cpf = p.getCPF();
 					}
 				}
+				if(!isEditMode) {
+					String codProcessoAux = CSVInscricao.generateCodProc(codDisc);
+					codProcesso.setText(codProcessoAux);
+				}
 				Inscricao inscNew = new Inscricao(codProcesso.getText(),cpf,codDisc);
-				CSVInscricao.addInscricao(inscNew);
 				
-				TelaInscricoes.main(null);
+				if(isEditMode){
+					try {
+						CSVInscricao.updateInscricao(inscNew, i);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}else {
+					CSVInscricao.addInscricao(inscNew);
+				}
+				TelaInscricoes.main(CSVInscricao.getInscricao(),0,0);
 				dispose();
 			}
 		};
@@ -187,7 +226,7 @@ public class TelaManterInscricao extends JFrame {
 		
 		ActionListener actListenerBack = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				TelaInscricoes.main(null);
+				TelaInscricoes.main(CSVInscricao.getInscricao(),0,0);
 				dispose();
 			}
 		};
