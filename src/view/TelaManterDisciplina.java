@@ -159,9 +159,11 @@ public class TelaManterDisciplina extends JFrame {
 		cursoDisciplina = new JComboBox();
 		Fila<Cursos> filaCurs = CSVCursos.getCursos();
 		String[] cursos = new String[filaCurs.Size()];
-		for(int i=0; i<filaCurs.Size(); i++) {
-			Cursos curs = filaCurs.Remove();
-			cursos[i] = curs.getNome();
+		Cursos[] vetCursos = new Cursos[filaCurs.Size()];
+		int tamAux = filaCurs.Size();
+		for(int i=0; i<tamAux; i++) {
+			vetCursos[i] = filaCurs.Remove();
+			cursos[i] = vetCursos[i].getNome();
 		};
 		
 		cursoDisciplina.setModel(new DefaultComboBoxModel(cursos));
@@ -216,15 +218,14 @@ public class TelaManterDisciplina extends JFrame {
 		
 		btnVoltar.addActionListener(actListenerBack);
 		
-		if(isEditMode) {
 			ActionListener actEnviar = new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
 					String curso = "";
 					try {
 						for(int j=0; j<filaCurs.Size(); j++) {
-							Cursos curs = filaCurs.Remove();
-							if (cursoDisciplina.getSelectedItem().toString().equals(curs.getNome())){
-								curso = Integer.toString(curs.getCodigo());
+							if (cursoDisciplina.getSelectedItem().toString().equals(vetCursos[j].getNome())){
+								curso = Integer.toString(vetCursos[j].getCodigo());
+								System.out.println(curso);
 							}
 						}
 					} catch (Exception e) {
@@ -232,42 +233,26 @@ public class TelaManterDisciplina extends JFrame {
 						e.printStackTrace();
 					}
 					Disciplinas disc = new Disciplinas(nomeDisciplina.getText(),codDisciplina.getText(), diaSemana.getSelectedItem().toString(),LocalTime.parse(horarioDisciplina.getText()), Integer.parseInt(qtdHrsSemanais.getText()), curso);
-					try {
-						CSVDisciplinas.updateDisciplina(disc, pos);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+					
+					if(isEditMode) {
+						try {
+							CSVDisciplinas.updateDisciplina(disc, pos);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}else {
+						CSVDisciplinas.addDisciplina(disc);
 					}
 					TelaDisciplinas.main(null);
 					dispose();	
 				}
 			};
-			btnNewButton.addActionListener(actEnviar);
-		}else {
-			ActionListener actEnviar = new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					String curso = "";
-						try {
-							for(int j=0; j<filaCurs.Size(); j++) {
-								Cursos curs = filaCurs.Remove();
-								if (cursoDisciplina.getSelectedItem().toString().equals(curs.getNome())){
-									curso = Integer.toString(curs.getCodigo());
-								}
-							}
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					Disciplinas disc = new Disciplinas(nomeDisciplina.getText(),codDisciplina.getText(), diaSemana.getSelectedItem().toString(),LocalTime.parse(horarioDisciplina.getText()), Integer.parseInt(qtdHrsSemanais.getText()), curso);
-					CSVDisciplinas.addDisciplina(disc);
-					TelaDisciplinas.main(null);
-					dispose();	
 			
-					}
-			};
 			btnNewButton.addActionListener(actEnviar);
+			
 		}
 		
 }
-}
+
 
