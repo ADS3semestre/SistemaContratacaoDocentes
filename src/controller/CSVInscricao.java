@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import com.destny.fila.Fila;
 import com.destny.model.ListaLib;
 
+import model.Disciplinas;
 import model.Inscricao;
 
 public class CSVInscricao {
@@ -134,5 +135,26 @@ public class CSVInscricao {
     	} finally {
     		updateAllInscricao(inscricao);
     	}
+    }
+    
+    public static ListaLib<Inscricao>[] filterByName() throws Exception {
+        ListaLib<Disciplinas> listaDisc = CSVDisciplinas.getListaDisc();
+        ListaLib<Inscricao> listaInsc = getListaInsc();
+        int tDisc = listaDisc.size();
+        int tInsc = listaInsc.size();
+        ListaLib<Inscricao> filtered[] = new ListaLib[tDisc];
+        if (listaDisc.isEmpty()) {
+            return filtered;
+        }
+        for (int i = 0; i < tDisc; i++) {
+            filtered[i] = new ListaLib<Inscricao>();
+            String codDisc = listaDisc.get(i).getCodigoDisciplina();
+            for (int j = 0; j < tInsc; j++) {
+                if (codDisc.equals(listaInsc.get(j).getCodigoDisciplina())) {
+                    filtered[i].addLast(listaInsc.get(j));
+                }
+            }
+        }
+        return filtered;
     }
 }
