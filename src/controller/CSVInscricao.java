@@ -1,6 +1,5 @@
 package controller;
 
-import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -18,7 +17,7 @@ public class CSVInscricao {
 
     // Get Inscrição -- Read
     
-    public static Fila<Inscricao> getInscricao() {
+    public static Fila<Inscricao> getInscricao() throws Exception{
         Fila<Inscricao> inscricao = new Fila<>();
         BufferedReader reader = null;
         String line = "";
@@ -64,7 +63,7 @@ public class CSVInscricao {
     
     // Get Inscrição -- Create
 
-    public static void addInscricao(Inscricao insc) {
+    public static void addInscricao(Inscricao insc) throws Exception{
 
         String line = "";
         String fileName = CSVController.getFileName("inscricoes.csv");

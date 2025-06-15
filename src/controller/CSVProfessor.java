@@ -14,7 +14,7 @@ import model.Professor;
 public class CSVProfessor {
     
     // Get Professor -- Read
-    public static Fila<Professor> getProfessor() {
+    public static Fila<Professor> getProfessor() throws Exception{
         Fila<Professor> professores = new Fila<>();
         BufferedReader reader = null;
         String line = "";
@@ -54,7 +54,7 @@ public class CSVProfessor {
     
     // Add Professor -- Create
 
-    public static void addProfessor(Professor professor) {
+    public static void addProfessor(Professor professor) throws Exception{
         String line = "";
         String fileName = CSVController.getFileName("professor.csv");
        

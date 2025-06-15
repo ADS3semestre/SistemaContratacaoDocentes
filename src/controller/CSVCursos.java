@@ -14,13 +14,11 @@ import model.Cursos;
 public class CSVCursos {
 
     // Cursos --- Read
-    
-    public static Fila<Cursos> getCursos() {
+    public static Fila<Cursos> getCursos()  throws Exception{
+        String fileName = CSVController.getFileName("cursos.csv");
         Fila<Cursos> cursos = new Fila<>();
         BufferedReader reader = null;
         String line = "";
-        String fileName = CSVController.getFileName("cursos.csv");
-
 
         try {
             reader = new BufferedReader(new FileReader(fileName));
@@ -55,9 +53,8 @@ public class CSVCursos {
     
     // Cursos -- Create
     
-    public static void addCurso(Cursos curso) {
+    public static void addCurso(Cursos curso) throws Exception{
         String fileName = CSVController.getFileName("cursos.csv");
-
         String nCurso = curso.getNome();
         String aCurso = curso.getArea();
         String Cursocod = String.valueOf(curso.getCodigo());
@@ -77,7 +74,7 @@ public class CSVCursos {
     // Update All Cursos
     
     private static void updateAllCursos(ListaLib<Cursos> cursos) throws Exception {
-    	String fileName = CSVController.getFileName("cursos.csv");
+        String fileName = CSVController.getFileName("cursos.csv");
     	String cabecalho = "Nome,Área,Código";
     	int t = cursos.size();
     	

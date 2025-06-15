@@ -15,7 +15,7 @@ import model.Inscricao;
 
 public class CSVDisciplinas {
     // Get Disciplinas - Read
-    public static Fila<Disciplinas> getDisciplinas() {
+    public static Fila<Disciplinas> getDisciplinas() throws Exception{
         Fila<Disciplinas> disciplinas = new Fila<>();
         BufferedReader reader = null;
         String line = "";
@@ -53,7 +53,7 @@ public class CSVDisciplinas {
     }
 
     // Add Disciplinas - Create
-    public static void addDisciplina(Disciplinas disciplina) {
+    public static void addDisciplina(Disciplinas disciplina) throws Exception{
         String fileName = CSVController.getFileName("disciplinas.csv");
 
         String cDisc = disciplina.getCodigoDisciplina();
