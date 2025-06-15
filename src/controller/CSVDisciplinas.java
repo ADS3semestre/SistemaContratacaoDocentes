@@ -5,13 +5,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.time.LocalTime;
+import java.util.List;
 
 import com.destny.fila.Fila;
 import com.destny.model.ListaLib;
 
 
 import model.Disciplinas;
+import model.Inscricao;
 
 public class CSVDisciplinas{
     // Get Disciplinas - Read
@@ -40,7 +43,7 @@ public class CSVDisciplinas{
         }
         return disciplinas;
     }
-    public static ListaLib<Disciplinas>getLista() throws Exception { 
+    public static ListaLib<Disciplinas>getListaDisc() throws Exception { 
         Fila<Disciplinas> discs = getDisciplinas();
         ListaLib<Disciplinas> disciplinas = new ListaLib<>(); 
         int t = discs.Size();
@@ -108,13 +111,14 @@ public class CSVDisciplinas{
     // Remove Disciplina - Delete
     public static void removeDisciplina(int i) throws Exception {
         ListaLib<Disciplinas> disciplinas = new ListaLib<>();
-        disciplinas = getLista();
+        disciplinas = getListaDisc();
         String codDisc = disciplinas.get(i).getCodigoDisciplina();
 
         BufferedReader reader = null;
         String line = "";
-        String fileName = CSVController.getFileName("inscricao.csv");
+        String fileName = CSVController.getFileName("inscricoes.csv");
         int count = 0;
+        ListaLib<Integer> toRemove = new ListaLib<>();
 
         try {
             disciplinas.remove(i);
@@ -123,21 +127,25 @@ public class CSVDisciplinas{
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
                 if(row[2].contains(codDisc)){
-                    CSVIncricao.removeInscricao(count);
+                    toRemove.addLast(count);;
                 }
                 count++;
+            }
+            int t = toRemove.size();
+            for(int j = t - 1; j >= 0; j-- ){
+                CSVInscricao.removeInscricao(toRemove.get(j));
             }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            updateAllDisciplinas(disciplinas);
+            updateAllDisciplinas(disciplinas);    
         }
     }
 
     // Update Disciplina - Update
     public static void updateDisciplina(Disciplinas disciplina, int i) throws Exception {
         ListaLib<Disciplinas> disciplinas = new ListaLib<>();
-        disciplinas = getLista();
+        disciplinas = getListaDisc();
         try {
             disciplinas.remove(i);
             disciplinas.add(disciplina, i);
@@ -146,6 +154,52 @@ public class CSVDisciplinas{
         } finally {
             updateAllDisciplinas(disciplinas);
         }
+    }
+
+    private static int hashCode(int t, String codDisc){
+        int cod = codDisc.charAt(0) + codDisc.charAt(3) + codDisc.charAt(2) + Integer.parseInt(codDisc.substring(3));
+        cod = cod % t;
+        return cod;
+    }
+
+    public static ListaLib<Disciplinas> getActiveDisc() throws Exception{
+        ListaLib<Disciplinas> allDisc = getListaDisc();
+        ListaLib<Disciplinas> activeDiscs = new ListaLib<Disciplinas>();
+        ListaLib<Inscricao> inscs = CSVInscricao.getListaInsc();
+        int tInsc = inscs.size();
+        int tDisc = allDisc.size();
+        for (int i = 0; i < tDisc; i++){
+            for(int j = 0; j < tInsc; j++){
+                String codDisc = allDisc.get(i).getCodigoDisciplina();
+                if (codDisc.equals(inscs.get(j).getCodigoDisciplina())){
+                    activeDiscs.addLast(allDisc.get(i));
+                    break;
+                }
+            }
+        }
+        return activeDiscs;
+    }
+
+    public static ListaLib<Disciplinas>[] getHashTable() throws Exception{
+        int tableSize = 5;
+        
+        ListaLib<Disciplinas> listaDisc = getActiveDisc();
+        int tLista = listaDisc.size();
+        ListaLib<Disciplinas> hashTable[] = new ListaLib[tableSize];
+        if(listaDisc.isEmpty()){
+            return hashTable;
+        }
+
+        for(int i = 0; i < tableSize; i++){
+           hashTable[i] = new ListaLib<Disciplinas>();
+        }
+
+        for(int i = 0; i < tLista; i++){
+            String codDisc = listaDisc.get(i).getCodigoDisciplina();
+            int hashCode = hashCode(tableSize, codDisc);
+            hashTable[hashCode].addLast(listaDisc.get(i));
+        }
+        return hashTable;
     }
 
 }

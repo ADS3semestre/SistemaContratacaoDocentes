@@ -11,7 +11,7 @@ import com.destny.model.ListaLib;
 
 import model.Inscricao;
 
-public class CSVIncricao {
+public class CSVInscricao {
 
     // Get Inscrição -- Read
     
@@ -19,7 +19,7 @@ public class CSVIncricao {
         Fila<Inscricao> inscricao = new Fila<>();
         BufferedReader reader = null;
         String line = "";
-        String fileName = CSVController.getFileName("inscricao.csv");
+        String fileName = CSVController.getFileName("inscricoes.csv");
 
         try {
             reader = new BufferedReader(new FileReader(fileName));
@@ -50,14 +50,21 @@ public class CSVIncricao {
     	}
     	return inscricao;
     }
-    
+
+    public static String generateCodProc(String codDisc){
+        String codProc = "";
+        int num = 100 + (int)(Math.random() * 900);
+        codProc = codDisc + Integer.toString(num);
+        return codProc;
+    }
+
     
     // Get Inscrição -- Create
 
     public static void addInscricao(Inscricao insc) {
 
         String line = "";
-        String fileName = CSVController.getFileName("inscricao.csv");
+        String fileName = CSVController.getFileName("inscricoes.csv");
 
         String cInscProc = insc.getCodProcesso();
         String cpfInsc = insc.getCPF();
@@ -77,7 +84,7 @@ public class CSVIncricao {
     // Update All Inscrição
     
     private static void updateAllInscricao(ListaLib<Inscricao> inscricao) throws Exception {
-    	String fileName = CSVController.getFileName("inscricao.csv");
+    	String fileName = CSVController.getFileName("inscricoes.csv");
     	String cabecalho = "Código do Processo,CPF,Código da Disciplina";
     	int t = inscricao.size();
     	

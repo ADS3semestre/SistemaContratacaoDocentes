@@ -139,7 +139,7 @@ public class TelaManterProfessor extends JFrame {
 		
 		ActionListener actListenerEnvia = new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Professor profNew = new Professor(cpfProf.getText(),nomeProf.getText(),Double.parseDouble(pontosProf.getText()), areaProf.getText());
+				Professor profNew = new Professor(nomeProf.getText(),cpfProf.getText(),Double.parseDouble(pontosProf.getText()), areaProf.getText());
 				if(isEditMode) {
 					try {
 						CSVProfessor.updateProfessor(profNew, i);

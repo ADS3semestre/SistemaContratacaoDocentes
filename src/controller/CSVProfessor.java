@@ -76,7 +76,7 @@ public class CSVProfessor {
        //Update All Professores
     private static void updateAllProfessor(ListaLib<Professor> professor) throws Exception{
         String fileName = CSVController.getFileName("professor.csv");
-        String cabecalho = "Professor, CPF, Nome, Quantidade de Pontos, Área";
+        String cabecalho = "Nome , CPF, Quantidade de Pontos, Área";
         int i = professor.size();
 
         try(PrintWriter writer = new PrintWriter(new FileWriter(fileName))){

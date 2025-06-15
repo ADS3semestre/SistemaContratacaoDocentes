@@ -45,5 +45,12 @@ public class main {
         for(int i = 0; i < t; i++){
             System.out.println(professores.get(i).getQuantidadePontos());
         }*/
+        /* 
+        ListaLib<Disciplinas> discs = CSVDisciplinas.getActiveDisc();
+        int t = discs.size();
+        for(int i = 0; i < t; i++){
+            System.out.println(discs.get(i).getCodigoDisciplina());
+        }
+        */
     }
 }
