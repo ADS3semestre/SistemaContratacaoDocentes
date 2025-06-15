@@ -1,5 +1,6 @@
 package controller;
 
+import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -11,6 +12,7 @@ import com.destny.model.ListaLib;
 
 import model.Disciplinas;
 import model.Inscricao;
+import model.Professor;
 
 public class CSVInscricao {
 
@@ -137,24 +139,82 @@ public class CSVInscricao {
     	}
     }
     
-    public static ListaLib<Inscricao>[] filterByName() throws Exception {
-        ListaLib<Disciplinas> listaDisc = CSVDisciplinas.getListaDisc();
-        ListaLib<Inscricao> listaInsc = getListaInsc();
-        int tDisc = listaDisc.size();
-        int tInsc = listaInsc.size();
-        ListaLib<Inscricao> filtered[] = new ListaLib[tDisc];
-        if (listaDisc.isEmpty()) {
-            return filtered;
-        }
-        for (int i = 0; i < tDisc; i++) {
-            filtered[i] = new ListaLib<Inscricao>();
-            String codDisc = listaDisc.get(i).getCodigoDisciplina();
-            for (int j = 0; j < tInsc; j++) {
-                if (codDisc.equals(listaInsc.get(j).getCodigoDisciplina())) {
-                    filtered[i].addLast(listaInsc.get(j));
-                }
-            }
-        }
-        return filtered;
+    public static Fila<Inscricao> filterByName(String nome) throws Exception {
+				Fila<Disciplinas> filaDisc = CSVDisciplinas.getDisciplinas();
+				Fila<Inscricao> filaInscFiltro = new Fila<>();
+				Fila<Inscricao> filaInsc2 = getInscricao();
+				int tamAux = filaDisc.Size();
+				int posVetD = 0;
+				try {
+					for(int i=0; i<tamAux; i++) {
+						Disciplinas d = filaDisc.Remove();
+						int tamInsc2 = filaInsc2.Size();
+						
+						if(d.getNomeDisciplina().equals(nome)) {	
+							posVetD = i;
+							for(int j=0; j<tamInsc2; j++) {
+								Inscricao ins = filaInsc2.Remove();
+								if(ins.getCodigoDisciplina().equals(d.getCodigoDisciplina())) {
+									filaInscFiltro.Insert(ins);
+								}
+							}
+						}
+					}
+				}catch(Exception e) {
+					e.getMessage();
+				}
+				
+				return filaInscFiltro;
+    }
+    
+    public static Fila<Inscricao> filterQuick(Boolean isAscendingOrder) throws Exception{
+    	Fila<Professor> filaProf2 = CSVProfessor.getProfessor();
+		ListaLib<Professor> listaProf = new ListaLib<>();
+		int tam2 = filaProf2.Size();
+		for(int i=0;i<tam2;i++) {
+			try {
+				listaProf.addLast(filaProf2.Remove());
+				listaProf = CSVProfessor.quickSort(listaProf, 0,tam2);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		Fila<Inscricao> filaInscOrd = new Fila<>();
+		
+		if(isAscendingOrder) {
+			try {
+				for(int i=tam2-1;i>=0;i--) {
+					Fila<Inscricao> filaInsc = getInscricao();
+					Professor p = listaProf.get(i);
+					int tamAuxFila = filaInsc.Size();
+					for(int j=0;j<tamAuxFila;j++) {
+						Inscricao in = filaInsc.Remove();
+						if(in.getCPF().equals(p.getCPF())) {
+							filaInscOrd.Insert(in);
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else {
+			try {
+				for(int i=0;i<tam2;i++) {
+					Fila<Inscricao> filaInsc = getInscricao();
+					Professor p = listaProf.get(i);
+					int tamAuxFila = filaInsc.Size();
+					for(int j=0;j<tamAuxFila;j++) {
+						Inscricao in = filaInsc.Remove();
+						if(in.getCPF().equals(p.getCPF())) {
+							filaInscOrd.Insert(in);
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return filaInscOrd;
     }
 }
