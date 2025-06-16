@@ -15,6 +15,7 @@ public class CSVController {
         File dir = new File(path);
         if(!dir.exists()){
             dir.mkdir();
+            path = path + File.separator + fileName;
             return path;
         } else{
             throw new Exception("Diretório inválido");
