@@ -11,14 +11,10 @@ public class CSVController {
     }
 
     public static String getFileName(String fileName) throws Exception{
-        String path = "";
-        if (getOS().contains("Windows")) {
-            path = ".\\files\\" + fileName;
-        } else {
-            path = "./files/" + fileName;
-        }
+        String path = System.getProperty("user.home") + File.separator + "SistemaDocentes";
         File dir = new File(path);
-        if(dir.exists()){
+        if(!dir.exists()){
+            dir.mkdir();
             return path;
         } else{
             throw new Exception("Diretório inválido");
