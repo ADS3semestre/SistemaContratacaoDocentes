@@ -17,6 +17,10 @@ public class CSVController {
             dir.mkdir();
         }
         path = path + File.separator + fileName;
+        File arq = new File(path);
+        if(!arq.exists()){
+            arq.createNewFile();
+        }
         return path;
     }
 }

@@ -20,7 +20,7 @@ public class CSVDisciplinas {
         BufferedReader reader = null;
         String line = "";
         String fileName = CSVController.getFileName("disciplinas.csv");
-
+        
         try {
             reader = new BufferedReader(new FileReader(fileName));
             reader.readLine(); // Pula o cabeçalho do arquivo
